@@ -1,0 +1,18 @@
+<div class="card">
+  <div class="card-body">
+    <h4 class="card-title"><span class="lstick"></span>Latest Messages from User</h4>
+  </div>
+  <div class="comment-widgets" *ngFor="let item of reviews">
+    <div class="d-flex flex-row comment-row">
+      <div class="p-2"><span class="round"><img alt="user" width="50" [src]="item.rater.avatarUrl"></span></div>
+      <div class="comment-text w-100">
+        <h5>{{item?.rater?.name}}</h5>
+        <i class="m-b-5">"{{item?.comment}}"</i>
+        <div class="comment-footer">
+          <span class="text-muted pull-right">{{item?.createdAt | date: 'short'}}</span>
+          <star-rating [rate]="item.rating"></star-rating>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

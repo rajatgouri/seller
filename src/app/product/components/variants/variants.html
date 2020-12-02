@@ -1,0 +1,162 @@
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th colspan="3">
+          <div class="row">
+            <div class="col col-md-2">Key</div>
+            <div class="col col-md-4">Display Text
+              <br><small class="text-muted">Name of variant</small>
+            </div>
+            <div class="col col-md-4">
+              Value
+              <br>
+              <small class="text-muted">Value of variant</small>
+            </div>
+            <div class="col col-md-2"></div>
+          </div>
+        </th>
+        <th>Price</th>
+        <th>Sale Price</th>
+        <th>Stock Quantity</th>
+        <th>Updated at</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of items; let i = index">
+        <td colspan="3">
+          <div class="row option-row" *ngFor="let opt of item.options; let index = index">
+            <div class="col col-md-2">{{opt?.key}}</div>
+            <div class="col col-md-4">{{opt?.displayText}}</div>
+            <div class="col col-md-4">{{opt?.value}}</div>
+            <div class="col col-md-2">
+              <a (click)="removeOption(item, index)" *ngIf="item.options.length > 1">
+                <i class="fa fa-trash"></i>
+              </a> &nbsp;
+              <a (click)="openOption(opt)" *ngIf="!opt.isNew && index === 0">
+                <i class="fa fa-plus"></i>
+              </a>
+              <a (click)="closeOption(opt)" *ngIf="opt.isNew && index === 0">
+                <i class="fa fa-close"></i>
+              </a>
+            </div>
+            <div class="row" *ngIf="opt.isNew && index === 0">
+              <div class="col col-md-2">
+                <input type="text" class="form-control" [(ngModel)]="newOption.key" />
+
+              </div>
+              <div class="col col-md-4">
+                <input type="text" class="form-control" [(ngModel)]="newOption.displayText" />
+              </div>
+              <div class="col col-md-4">
+                <input type="text" class="form-control" [(ngModel)]="newOption.value" />
+              </div>
+              <div class="col col-md-2">
+                <button (click)="addNewOption(item)" type="button" class="btn btn-primary">Add</button>
+              </div>
+            </div>
+          </div>
+        </td>
+        <td>{{item.price | currency}}</td>
+        <td>{{item.salePrice | currency}}</td>
+        <td>{{item.stockQuantity | number}}</td>
+        <td>{{item.updatedAt | date}}</td>
+        <td>
+          <a (click)="update(item, i)">
+            <i class="fa fa-pencil"></i>
+          </a>&nbsp;
+          <a (click)="remove(item._id, i)">
+            <i class="fa fa-trash"></i>
+          </a>
+        </td>
+      </tr>
+      <tr *ngIf="!items?.length">
+        <td colspan="10">
+          <p>There is no variant, please create new.</p>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="10" *ngIf="total > 10">
+          <ngb-pagination [collectionSize]="total" [(page)]="page" (pageChange)="query()"></ngb-pagination>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="3">
+          <div class="row">
+            <div class="col col-md-2">
+              <div class="form-group">
+                <input type="text" class="form-control" name="key" placeholder="S,M,L..." [(ngModel)]="newVariant.options[0].key" />
+              </div>
+            </div>
+            <div class="col col-md-4">
+              <div class="form-group">
+                <input type="text" class="form-control" name="displayText" placeholder="Size, color, etc." [(ngModel)]="newVariant.options[0].displayText" />
+              </div>
+            </div>
+            <div class="col col-md-4">
+              <div class="form-group">
+                <input type="text" class="form-control" name="value" placeholder="40, XL, blue, etc." [(ngModel)]="newVariant.options[0].value" />
+              </div>
+            </div>
+            <div class="col col-md-2"></div>
+          </div>
+        </td>
+        <td *ngIf="product.type === 'digital'">
+          <div class="form-group">
+            <label>
+              <media-select (onSelect)="selectMedia($event)"></media-select>
+            </label>
+          </div>
+        </td>
+        <td>
+          <div class="form-group">
+            <input type="number" class="form-control" name="price" placeholder="Price" [(ngModel)]="newVariant.price" />
+          </div>
+        </td>
+        <td>
+          <div class="form-group">
+            <input type="number" class="form-control" name="salePrice" placeholder="Sale Price" [(ngModel)]="newVariant.salePrice" />
+          </div>
+        </td>
+        <td>
+          <div class="form-group">
+            <input type="number" class="form-control" name="stock" placeholder="Quantity" [(ngModel)]="newVariant.stockQuantity" />
+          </div>
+        </td>
+        <td></td>
+        <td>
+          <button type="button" class="btn btn-primary" (click)="create()">Add new</button>
+        </td>
+      </tr>
+
+    </tfoot>
+  </table>
+  <div class="badge badge-info">Use these system options or custom it by yourself.</div>
+  <div class="row">
+    <div class="col col-md-3">
+      <div class="form-group">
+        <input type="text" class="form-control" name="optionKey" placeholder="Search options..." [(ngModel)]="optionKey"
+          (change)="loadOptions()" />
+      </div>
+    </div>
+    <div class="col col-md-3">
+      <div class="form-group">
+        <select [(ngModel)]="option" class="form-control" name="key" (change)="selectOptionKey(option)">
+          <option ngValue="">--Option Key--</option>
+          <option *ngFor="let item of options" [ngValue]="item">{{item.name}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="col col-md-3">
+      <div class="form-group">
+        <select [(ngModel)]="detailOption" class="form-control" name="detailOption" (change)="selectOption(detailOption)">
+          <option ngValue="">--Option--</option>
+          <option *ngFor="let item of menuOptions" [ngValue]="item">{{item.key}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>

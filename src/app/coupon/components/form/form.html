@@ -1,0 +1,80 @@
+<div class="card">
+  <div class="card-body">
+    <form (submit)="submit(frm)" #frm="ngForm" *ngIf="coupon">
+      <div class="row">
+        <div class="col col-md-12">
+          <div class="tab-content">
+            <div class="row">
+              <div class="col col-md-6">
+                <div class="form-group">
+                  <label>Name (*)</label>
+                  <input type="text" name="couponName" #couponName="ngModel" class="form-control" placeholder="Enter name"
+                    [(ngModel)]="coupon.name" required />
+                  <div *ngIf="couponName.errors && (couponName.dirty || couponName.touched || isSubmitted)">
+                    <p [hidden]="!couponName.errors.required" class="required-text">
+                      Please enter coupon name!
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col col-md-6">
+                <div class="form-group">
+                  <label>Code (*)</label>
+                  <input type="text" name="couponCode" #couponCode="ngModel" class="form-control" required placeholder="Enter code"
+                    [(ngModel)]="coupon.code" />
+                  <div *ngIf="couponCode.errors && (couponCode.dirty || couponCode.touched || isSubmitted)">
+                    <p [hidden]="!couponCode.errors.required" class="required-text">
+                      Please enter coupon code!
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col col-md-4">
+                <div class="form-group">
+                  <label>Discount Percentage (*)</label>
+                  <input type="number" name="discountPercentage" min="1" max="100" #discountPercentage="ngModel" class="form-control"
+                    required [(ngModel)]="coupon.discountPercentage" />
+                  <div *ngIf="discountPercentage.errors && (discountPercentage.dirty || discountPercentage.touched || isSubmitted)">
+                    <p [hidden]="!discountPercentage.errors.required" class="required-text">
+                      Please enter discount percentage!
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col col-md-4">
+                <div class="form-group">
+                  <label>Limit (*)</label>
+                  <input type="number" name="limit" min="0" #limit="ngModel" class="form-control" required [(ngModel)]="coupon.limit" />
+                  <small class="text-muted">If enter 0, it means Unlimited</small>
+                  <div *ngIf="limit.errors && (limit.dirty || limit.touched || isSubmitted)">
+                    <p [hidden]="!limit.errors.required" class="required-text">
+                      Please enter coupon limit!
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col col-md-4">
+                <div class="form-group">
+                  <label>Expired time (*)</label>
+                  <div class="input-group input-date">
+                    <input class="form-control br-l" placeholder="yyyy-mm-dd" name="expiredTime" [(ngModel)]="date"
+                      ngbDatepicker #expiredTime="ngbDatepicker">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary fa fa-calendar br-r" (click)="expiredTime.toggle()" type="button"></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col col-md-12">
+          <div class="form-group">
+            <hr />
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>

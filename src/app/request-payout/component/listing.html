@@ -1,0 +1,155 @@
+<div class="card" *ngIf="!isLoading">
+  <div class="row" style="padding: 25px">
+    <div class="col-md-3">
+      <div class="input-group input-date">
+        <span class="text-center">From:</span>&nbsp;
+        <input class="form-control br-l" placeholder="yyyy-mm-dd" name="startDate" [(ngModel)]="dateFilter.startDate"
+          ngbDatepicker #startDate="ngbDatepicker">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary fa fa-calendar br-r" (click)="startDate.toggle()" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="input-group input-date">
+        <span>To:</span>&nbsp;
+        <input class="form-control br-l" placeholder="yyyy-mm-dd" name="toDate" [(ngModel)]="dateFilter.toDate"
+          ngbDatepicker #toDate="ngbDatepicker">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary fa fa-calendar br-r" (click)="toDate.toggle()" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3"><a class="btn btn-success" (click)="queryStats()">Stats By Date Range</a></div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group" style="padding: 25px; padding-bottom: 0">
+        <label>Pending</label>
+        <h4>Commission: {{stats?.pending?.commission | currency}}</h4>
+        <h4>Shop Balance: {{stats?.pending?.shopBalance | currency}}</h4>
+        <h4>Site Balance: {{stats?.pending?.siteBalance | currency}}</h4>
+        <h4>COD Balance: {{stats?.pending?.codBalance | currency}}</h4>
+        <h4>Non COD Balance: {{stats?.pending?.nonCodBalance | currency}}</h4>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group" style="padding: 25px; padding-bottom: 0">
+        <label>Approved</label>
+        <h4>Commission: {{stats?.approved?.commission | currency}}</h4>
+        <h4>Shop Balance: {{stats?.approved?.shopBalance | currency}}</h4>
+        <h4>Site Balance: {{stats?.approved?.siteBalance | currency}}</h4>
+        <h4>COD Balance: {{stats?.approved?.codBalance | currency}}</h4>
+        <h4>Non COD Balance: {{stats?.approved?.nonCodBalance | currency}}</h4>
+      </div>
+    </div>
+  </div>
+  <div class="card-body table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>
+            <a (click)="sortBy('total', 'desc')">Total</a>
+            <span *ngIf="sortOption.sortBy=='total'">
+              <a (click)="sortBy('total', 'asc')" *ngIf="sortOption.sortType=='desc'"><i class="fa fa-caret-down"></i></a>
+              <a (click)="sortBy('total', 'desc')" *ngIf="sortOption.sortType=='asc'"><i class="fa fa-caret-up"></i></a>
+            </span>
+          </th>
+          <th>
+            <a (click)="sortBy('commission', 'desc')">Commission</a>
+            <span *ngIf="sortOption.sortBy=='commission'">
+              <a (click)="sortBy('commission', 'asc')" *ngIf="sortOption.sortType=='desc'"><i class="fa fa-caret-down"></i></a>
+              <a (click)="sortBy('commission', 'desc')" *ngIf="sortOption.sortType=='asc'"><i class="fa fa-caret-up"></i></a>
+            </span>
+          </th>
+          <th>
+            <a (click)="sortBy('shopBalance', 'desc')">Shop Balance</a>
+            <span *ngIf="sortOption.sortBy=='shopBalance'">
+              <a (click)="sortBy('shopBalance', 'asc')" *ngIf="sortOption.sortType=='desc'"><i class="fa fa-caret-down"></i></a>
+              <a (click)="sortBy('shopBalance', 'desc')" *ngIf="sortOption.sortType=='asc'"><i class="fa fa-caret-up"></i></a>
+            </span>
+          </th>
+          <th>
+            <a (click)="sortBy('siteBalance', 'desc')">Site Balance</a>
+            <span *ngIf="sortOption.sortBy=='siteBalance'">
+              <a (click)="sortBy('siteBalance', 'asc')" *ngIf="sortOption.sortType=='desc'"><i class="fa fa-caret-down"></i></a>
+              <a (click)="sortBy('siteBalance', 'desc')" *ngIf="sortOption.sortType=='asc'"><i class="fa fa-caret-up"></i></a>
+            </span>
+          </th>
+          <th>
+            <a (click)="sortBy('codBalance', 'desc')">COD Balance</a>
+            <span *ngIf="sortOption.sortBy=='codBalance'">
+              <a (click)="sortBy('codBalance', 'asc')" *ngIf="sortOption.sortType=='desc'"><i class="fa fa-caret-down"></i></a>
+              <a (click)="sortBy('codBalance', 'desc')" *ngIf="sortOption.sortType=='asc'"><i class="fa fa-caret-up"></i></a>
+            </span>
+          </th>
+          <th>
+            <a (click)="sortBy('nonCodBalance', 'desc')">Non COD Balance</a>
+            <span *ngIf="sortOption.sortBy=='nonCodBalance'">
+              <a (click)="sortBy('nonCodBalance', 'asc')" *ngIf="sortOption.sortType=='desc'"><i class="fa fa-caret-down"></i></a>
+              <a (click)="sortBy('nonCodBalance', 'desc')" *ngIf="sortOption.sortType=='asc'"><i class="fa fa-caret-up"></i></a>
+            </span>
+          </th>
+          <th>
+            <a (click)="sortBy('paidToShop', 'desc')">Paid</a>
+            <span *ngIf="sortOption.sortBy=='paidToShop'">
+              <a (click)="sortBy('paidToShop', 'asc')" *ngIf="sortOption.sortType=='desc'"><i class="fa fa-caret-down"></i></a>
+              <a (click)="sortBy('paidToShop', 'desc')" *ngIf="sortOption.sortType=='asc'"><i class="fa fa-caret-up"></i></a>
+            </span>
+          </th>
+          <!-- <th>
+            <a (click)="sortBy('requestToTime', 'desc')">Request To Date</a>
+            <span *ngIf="sortOption.sortBy=='paidToShop'">
+              <a (click)="sortBy('requestToTime', 'asc')" *ngIf="sortOption.sortType=='desc'"><i class="fa fa-caret-down"></i></a>
+              <a (click)="sortBy('requestToTime', 'desc')" *ngIf="sortOption.sortType=='asc'"><i class="fa fa-caret-up"></i></a>
+            </span>
+          </th> -->
+          <th>
+            <a (click)="sortBy('createdAt', 'desc')">Created At</a>
+            <span *ngIf="sortOption.sortBy=='createdAt'">
+              <a (click)="sortBy('createdAt', 'asc')" *ngIf="sortOption.sortType=='desc'"><i class="fa fa-caret-down"></i></a>
+              <a (click)="sortBy('createdAt', 'desc')" *ngIf="sortOption.sortType=='asc'"><i class="fa fa-caret-up"></i></a>
+            </span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="!total">
+          <td colspan="8">
+            <p class="text-center text-danger">There is no items yet..</p>
+          </td>
+        </tr>
+        <tr *ngFor="let item of items, let i = index">
+          <td>
+            {{item?.total | currency}}
+          </td>
+          <td>{{item?.commission | currency}}</td>
+          <td>
+            {{item?.shopBalance | currency}}
+          </td>
+          <td>
+            {{item?.siteBalance | currency}}
+          </td>
+          <td>
+            {{item?.codBalance | currency}}
+          </td>
+          <td>
+            {{item?.nonCodBalance | currency}}
+          </td>
+          <td>
+            <span *ngIf="item.status ==='approved'" class="label label-success">Approved</span>
+            <span *ngIf="item.status ==='rejected'" class="label label-danger">Rejected</span>
+            <span *ngIf="item.status ==='pending'" class="label label-warning">Pending</span>
+          </td>
+          <!-- <td>{{item?.requestToTime | date}}</td> -->
+          <td>{{item?.createdAt | date}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="display-inline" [hidden]="total < take">
+      <div class="pull-right">
+        <ngb-pagination [collectionSize]="total" [(page)]="page" [maxSize]="5" [pageSize]="take" (pageChange)="query()"></ngb-pagination>
+      </div>
+    </div>
+  </div>
+</div>

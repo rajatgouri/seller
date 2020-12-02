@@ -1,0 +1,196 @@
+<div class="card" *ngIf="!isLoading">
+  <div class="card-body table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>
+            <a (click)="sortBy('accountHolderName', 'desc')">Recipient's name&nbsp;</a>
+            <span *ngIf="sortOption.sortBy=='accountHolderName'">
+              <a (click)="sortBy('accountHolderName', 'asc')" *ngIf="sortOption.sortType=='desc'"><i class="fa fa-caret-down"></i></a>
+              <a (click)="sortBy('accountHolderName', 'desc')" *ngIf="sortOption.sortType=='asc'"><i class="fa fa-caret-up"></i></a>
+            </span>
+          </th>
+          <th>
+            <a (click)="sortBy('type', 'desc')">Type&nbsp;</a>
+            <span *ngIf="sortOption.sortBy=='type'">
+              <a (click)="sortBy('type', 'asc')" *ngIf="sortOption.sortType=='desc'"><i class="fa fa-caret-down"></i></a>
+              <a (click)="sortBy('type', 'desc')" *ngIf="sortOption.sortType=='asc'"><i class="fa fa-caret-up"></i></a>
+              
+            </span>
+          </th>
+          <th>
+            <a (click)="sortBy('paypalAccount', 'desc')">Paypal Account&nbsp;</a>
+            <span *ngIf="sortOption.sortBy=='paypalAccount'">
+              <a (click)="sortBy('paypalAccount', 'asc')" *ngIf="sortOption.sortType=='desc'"><i class="fa fa-caret-down"></i></a>
+              <a (click)="sortBy('paypalAccount', 'desc')" *ngIf="sortOption.sortType=='asc'"><i class="fa fa-caret-up"></i></a>
+            </span>
+          </th>
+          <th>
+            <a (click)="sortBy('accountNumber', 'desc')">Account Number&nbsp;</a>
+            <span *ngIf="sortOption.sortBy=='accountNumber'">
+              <a (click)="sortBy('accountNumber', 'asc')" *ngIf="sortOption.sortType=='desc'"><i class="fa fa-caret-down"></i></a>
+              <a (click)="sortBy('accountNumber', 'desc')" *ngIf="sortOption.sortType=='asc'"><i class="fa fa-caret-up"></i></a>
+            </span>
+          </th>
+          <th>
+            <a (click)="sortBy('bankName', 'desc')">Bank Name&nbsp;</a>
+            <span *ngIf="sortOption.sortBy=='bankName'">
+              <a (click)="sortBy('bankName', 'asc')" *ngIf="sortOption.sortType=='desc'"><i class="fa fa-caret-down"></i></a>
+              <a (click)="sortBy('bankName', 'desc')" *ngIf="sortOption.sortType=='asc'"><i class="fa fa-caret-up"></i></a>
+            </span>
+          </th>
+          <th>
+            <a (click)="sortBy('bankAddress', 'desc')">Bank Address&nbsp;</a>
+            <span *ngIf="sortOption.sortBy=='bankAddress'">
+              <a (click)="sortBy('bankAddress', 'asc')" *ngIf="sortOption.sortType=='desc'"><i class="fa fa-caret-down"></i></a>
+              <a (click)="sortBy('bankAddress', 'desc')" *ngIf="sortOption.sortType=='asc'"><i class="fa fa-caret-up"></i></a>
+            </span>
+          </th>
+          <th>
+            <a (click)="sortBy('iban', 'desc')">IBA Number&nbsp;</a>
+            <span *ngIf="sortOption.sortBy=='iban'">
+              <a (click)="sortBy('iban', 'asc')" *ngIf="sortOption.sortType=='desc'"><i class="fa fa-caret-down"></i></a>
+              <a (click)="sortBy('iban', 'desc')" *ngIf="sortOption.sortType=='asc'"><i class="fa fa-caret-up"></i></a>
+            </span>
+          </th>
+          <th>
+            <a (click)="sortBy('swiftCode', 'desc')">Swift Code&nbsp;</a>
+            <span *ngIf="sortOption.sortBy=='swiftCode'">
+              <a (click)="sortBy('swiftCode', 'asc')" *ngIf="sortOption.sortType=='desc'"><i class="fa fa-caret-down"></i></a>
+              <a (click)="sortBy('swiftCode', 'desc')" *ngIf="sortOption.sortType=='asc'"><i class="fa fa-caret-up"></i></a>
+            </span>
+          </th>
+          <th>
+            <a (click)="sortBy('sortCode', 'desc')">UKB Code&nbsp;</a>
+            <span *ngIf="sortOption.sortBy=='sortCode'">
+              <a (click)="sortBy('sortCode', 'asc')" *ngIf="sortOption.sortType=='desc'"><i class="fa fa-caret-down"></i></a>
+              <a (click)="sortBy('sortCode', 'desc')" *ngIf="sortOption.sortType=='asc'"><i class="fa fa-caret-up"></i></a>
+            </span>
+          </th>
+          <th>
+            <a (click)="sortBy('routingNumber', 'desc')">ABA Number&nbsp;</a>
+            <span *ngIf="sortOption.sortBy=='routingNumber'">
+              <a (click)="sortBy('routingNumber', 'asc')" *ngIf="sortOption.sortType=='desc'"><i class="fa fa-caret-down"></i></a>
+              <a (click)="sortBy('routingNumber', 'desc')" *ngIf="sortOption.sortType=='asc'"><i class="fa fa-caret-up"></i></a>
+            </span>
+          </th>
+          <th>
+            <a (click)="sortBy('ifscCode', 'desc')">IFS Code&nbsp;</a>
+            <span *ngIf="sortOption.sortBy=='ifscCode'">
+              <a (click)="sortBy('ifscCode', 'asc')" *ngIf="sortOption.sortType=='desc'"><i class="fa fa-caret-down"></i></a>
+              <a (click)="sortBy('ifscCode', 'desc')" *ngIf="sortOption.sortType=='asc'"><i class="fa fa-caret-up"></i></a>
+            </span>
+          </th>
+          <th>
+            <a (click)="sortBy('routingCode', 'desc')">Other Code&nbsp;</a>
+            <span *ngIf="sortOption.sortBy=='routingCode'">
+              <a (click)="sortBy('routingCode', 'asc')" *ngIf="sortOption.sortType=='desc'"><i class="fa fa-caret-down"></i></a>
+              <a (click)="sortBy('routingCode', 'desc')" *ngIf="sortOption.sortType=='asc'"><i class="fa fa-caret-up"></i></a>
+            </span>
+          </th>
+          <th>
+            <a (click)="sortBy('createdAt', 'desc')">Created At&nbsp;</a>
+            <span *ngIf="sortOption.sortBy=='createdAt'">
+              <a (click)="sortBy('createdAt', 'asc')" *ngIf="sortOption.sortType=='desc'"><i class="fa fa-caret-down"></i></a>
+              <a (click)="sortBy('createdAt', 'desc')" *ngIf="sortOption.sortType=='asc'"><i class="fa fa-caret-up"></i></a>
+            </span>
+          </th>
+          <th>Action</th>
+        </tr>
+        <tr>
+          <th></th>
+          <th>
+            <div class="input-group">
+              <select [(ngModel)]="searchType" class="form-control" (change)="query()">
+                <option value="">All</option>
+                <option value="bank-account">Bank Account</option>
+                <option value="paypal">Paypal</option>
+                <option value="stripe">Stripe</option>
+                
+              </select>
+            </div>
+          </th>
+          <th colspan="12">
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="!total">
+          <td colspan="14">
+            <p class="text-center text-danger">There is no items yet..</p>
+          </td>
+        </tr>
+        <tr *ngFor="let item of accounts, let i = index">
+          <td>
+            <a *ngIf="item.type === 'stripe'; else accountHolderElse " [routerLink]="['update', item._id ]" >
+              {{item?.account.accountHolderName}}
+            </a>
+            <ng-template #accountHolderElse>
+              <a  [routerLink]="['payout/accounts/update', item._id ]" >
+                {{item?.accountHolderName}}
+              </a>
+              <span *ngIf="!item.accountHolderName" class="text-muted">N/A</span>
+            </ng-template>
+          </td>
+          <td>
+            <span *ngIf="item.type === 'bank-account'" class="badge badge-warning">Bank account</span>
+            <span *ngIf="item.type === 'paypal'" class="badge badge-danger">Paypal</span>
+            <span *ngIf="item.type === 'stripe'" class="badge badge-primary">Stripe</span>
+
+          </td>
+          <td>{{item?.paypalAccount}}
+            <span *ngIf="!item.paypalAccount" class="text-muted">N/A</span>
+          </td>
+          <td>
+            <span *ngIf="item.type === 'stripe'; else accountNumberElse " >
+              {{item?.account.accountNumber}}
+            </span>
+            <ng-template #accountNumberElse>
+              <span >
+                {{item?.accountNumber}}
+              </span>
+              <span *ngIf="!item.accountNumber" class="text-muted">N/A</span>
+            </ng-template>
+          </td>
+          
+          <td>{{item?.bankName}}
+            <span *ngIf="!item.bankName" class="text-muted">N/A</span>
+          </td>
+          <td>{{item?.bankAddress}}
+            <span *ngIf="!item.bankAddress" class="text-muted">N/A</span>
+          </td>
+          <td>{{item?.iban}}
+            <span *ngIf="!item.iban" class="text-muted">N/A</span>
+          </td>
+          <td>{{item?.swiftCode}}
+            <span *ngIf="!item.swiftCode" class="text-muted">N/A</span>
+          </td>
+          <td>{{item.sortCode}}
+            <span *ngIf="!item.sortCode" class="text-muted">N/A</span>
+          </td>
+          <td>{{item?.routingNumber}}
+            <span *ngIf="!item.routingNumber" class="text-muted">N/A</span>
+          </td>
+          <td>{{item?.ifscCode}}
+            <span *ngIf="!item.ifscCode" class="text-muted">N/A</span>
+          </td>
+          <td>{{item?.routingCode}}
+            <span *ngIf="!item.routingCode" class="text-muted">N/A</span>
+          </td>
+          <td>
+            <span>{{item.createdAt | date:'short'}}</span>
+          </td>
+          <td>
+            <a [routerLink]="['update', item._id ]"><i class="fa fa-pencil"></i></a>
+            <a (click)="remove(item?._id, i)"><i class="fa fa-trash"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="display-inline" [hidden]="total < take">
+      <div class="pull-right">
+        <ngb-pagination [collectionSize]="total" [(page)]="page" [maxSize]="5" [pageSize]="take" (pageChange)="query()"></ngb-pagination>
+      </div>
+    </div>
+  </div>
+</div>

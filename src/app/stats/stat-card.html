@@ -1,0 +1,63 @@
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex no-block">
+      <div class="m-r-20 align-self-center mobile">
+        <span class="lstick m-r-20"></span>
+        <img *ngIf="type === 'order'" src="assets/images/icon/income.png">
+        <img *ngIf="type === 'product'" src="assets/images/icon/expense.png">
+        <img *ngIf="type === 'sale'" src="assets/images/icon/assets.png">
+      </div>
+      <div class="align-self-center inline-block">
+        <h5 class="text-highlight m-t-10">
+          <span *ngIf="type === 'order'"><a [routerLink]="['/orders/list']">Orders </a></span>
+          <span *ngIf="type === 'product'"><a [routerLink]="['/products/list']">Products </a></span>
+          <span *ngIf="type === 'sale'"><a [routerLink]="['/orders/list']">Total Amount of Sales</a></span>
+        </h5>
+        <div *ngIf="type === 'order'" class="mobile-stat-block">
+          <p class="inline-block">
+            <span class="label label-danger">{{stat?.all}}</span>&nbsp;<strong>Total</strong>
+          </p>
+          <p class="inline-block">
+            <span class="pull-left"><span class="label label-success">{{stat?.completed}}</span>&nbsp;<strong>Completed</strong></span>
+            <span class="pull-right"><strong>Shipping</strong>&nbsp;<span class="label label-success">{{stat?.shipping}}</span></span>
+          </p>
+          <p class="inline-block">
+            <span class="pull-left"><span class="label label-info">{{stat?.pending}}</span>&nbsp;<strong>Pending</strong></span>
+            <span class="pull-right"><strong>Progressing</strong>&nbsp;<span class="label label-info">{{stat?.progressing}}</span></span>
+          </p>
+          <p class="inline-block">
+            <span class="pull-left"><span class="label label-warning">{{stat?.refunded}}</span>&nbsp;<strong>Refunded</strong></span>
+            <span class="pull-right"><strong>Cancelled</strong>&nbsp;<span class="label label-warning">{{stat?.cancelled}}</span></span>
+          </p>
+        </div>
+
+        <div *ngIf="type === 'product'" class="mobile-stat-block">
+          <p class="inline-block">
+            <span class="label label-danger">{{stat?.total}}</span>&nbsp;<strong>Total</strong>
+          </p>
+          <p class="inline-block">
+            <span class="label label-danger">{{stat?.totalTransaction}}</span>&nbsp;<strong>Total Transaction Type</strong>
+          </p>
+        </div>
+
+        <div *ngIf="type === 'sale'" class="mobile-stat-block">
+          <p class="inline-block">
+            <span class="label label-danger no-wrap">{{stat?.balance | currency}}</span>&nbsp;<strong>Balance</strong>
+          </p>
+          <p class="inline-block">
+            <span class="label label-info no-wrap">{{stat?.commission | currency}}</span>&nbsp;<strong>Commission</strong>
+          </p>
+          <p class="inline-block">
+            <span class="label label-info no-wrap">{{stat?.taxPrice | currency}}</span>&nbsp;<strong>Tax</strong>
+          </p>
+          <p class="inline-block">
+            <span class="label label-warning no-wrap">{{stat?.totalPrice | currency}}</span>&nbsp;<strong>Total Price</strong>
+          </p>
+          <p class="inline-block">
+            <span class="label label-warning">{{stat?.totalProduct}}</span>&nbsp;<strong>Total Product</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

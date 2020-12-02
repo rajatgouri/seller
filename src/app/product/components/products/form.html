@@ -1,0 +1,462 @@
+<div class="card">
+  <div class="card-body">
+    <form (submit)="submit(frm)" #frm="ngForm" *ngIf="product">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="nav flex-column nav-pills nav-top-cus" role="tablist" aria-orientation="vertical">
+            <a class="nav-link" data-toggle="tab" role="tab" aria-controls="home" aria-selected="true" [ngClass]="{active: tab == 'info'}"
+              (click)="changeTab('info')">Information</a>
+
+            <a class="nav-link" data-toggle="tab" role="tab" aria-controls="profile" aria-selected="false" [ngClass]="{active: tab == 'spec'}"
+              (click)="changeTab('spec')">Specifications</a>
+
+            <a class="nav-link" data-toggle="tab" role="tab" aria-controls="contact" aria-selected="false" [ngClass]="{active: tab == 'images'}"
+              (click)="changeTab('images')">Images</a>
+
+            <a class="nav-link" data-toggle="tab" role="tab" aria-controls="catalogs" aria-selected="false" [ngClass]="{active: tab == 'catalogs'}"
+              (click)="changeTab('catalogs')">Variants</a>
+
+            <a [hidden]="!product._id" class="nav-link" data-toggle="tab" role="tab" aria-controls="review"
+              aria-selected="false" [ngClass]="{active: tab == 'review'}" (click)="changeTab('review')">Reviews From
+              User</a>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="tab-content">
+            <div class="tab-pane" role="tabpanel" [ngClass]="{'show active': tab === 'info', hide: tab !== 'info'}">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Name (*)</label>
+                    <input type="text" name="productName" #productName="ngModel" class="form-control" placeholder="Enter name"
+                      [(ngModel)]="product.name" required (change)="changeAlias()" />
+                    <div *ngIf="productName.errors && (productName.dirty || productName.touched || isSubmitted)">
+                      <p [hidden]="!productName.errors.required" class="required-text">
+                        Please enter product name!
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Alias</label>
+                    <input type="text" name="alias" class="form-control" placeholder="no space, special chars, alias name for seo"
+                      [(ngModel)]="product.alias" />
+                    <small class="text-muted">If the alias is exist, the system automatically adds any character at the
+                      end of alias.</small>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Type</label>
+                    <select type="text" name="type" class="form-control" placeholder="Physical or Digital" [(ngModel)]="product.type">
+                      <option value="physical">Physical</option>
+                      <option value="digital">Digital</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-6" *ngIf="product.type === 'digital'">
+                  <div class="form-group" >
+                    <label style="width:100%">Digital FilePath </label>
+                    <file-upload [options]="fileOptions"></file-upload>
+                    <div *ngIf="product.type === 'digital' && product.digitalFileId">
+                      <img src="assets/images/file-exist.jpg" *ngIf="fileType === 'file'" width="45px">
+                      <img src="assets/images/zip-icon.png" *ngIf="fileType === 'zip'" width="45px">
+                      <img src="assets/images/pdf-icon.png" *ngIf="fileType === 'pdf'" width="45px">
+                      <img src="assets/images/rar-exist.png" *ngIf="fileType === 'rar'" width="45px">
+                      <span *ngIf="product.type === 'digital' && product.digitalFileId && product.digitalFile">
+                        Mime Type: {{product?.digitalFile?.mimeType}}
+                      </span>
+                    </div>
+                    <img src="assets/images/nofile-available.png" width="45px" *ngIf="product.type === 'digital' && !product.digitalFileId">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Transaction Type</label>
+                    <select class="form-control" [(ngModel)]="product.transactiontypeId" name="transactiontypeId" (change) = "transactionTypeChange($event)" >
+                      <option value="">-- No Transaction Type --</option>
+                      <option *ngFor="let item of transactionType" [ngValue]="item._id">{{item.name}}</option>
+                    </select>
+                  </div>
+                </div>
+
+                
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Category (*)</label>
+                    <select class="form-control" [(ngModel)]="product.categoryId" name="categoryId">
+                      <option value="">-- No category --</option>
+                      <option *ngFor="let item of tree" [ngValue]="item._id">{{item.name}}</option>
+                    </select>
+                  </div>
+                </div>
+
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Product Type</label>
+                    <select class="form-control" [(ngModel)]="product.producttypeId" name="producttypeId" >
+                      <option value="">-- No Product Type --</option>
+                      <option *ngFor="let item of productType" [ngValue]="item._id">{{item.name}}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-md-6" *ngIf="transactionTypeText !== 'Rent' && transactionTypeText !== 'Share'">
+                  <div class="form-group">
+                    <label>Stock Quantity (*)</label>
+                    <input type="number" name="stockQuantity" min="1" class="form-control" [(ngModel)]="product.stockQuantity" required #stock="ngModel"/>
+                    <div *ngIf="stock.errors && (stock.dirty || stock.touched || isSubmitted)">
+                      <p [hidden]="!stock.errors.required" class="required-text">
+                        Stock quantity is required
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6" *ngIf="transactionTypeText == 'Rent' || transactionTypeText == 'Share'">
+                  <div class="form-group">
+                    <label>Available Start Dates</label>
+                    <input class="form-control" type="text" placeholder="From Date"
+                    name="dpFromDate" [(ngModel)]="fromDate" ngbDatepicker  #df="ngbDatepicker" (click)="df.toggle()" (dateSelect)="validateAvailableDate($event)">
+                  </div>
+                </div>
+
+                <div class="col-md-6" *ngIf="transactionTypeText == 'Rent' || transactionTypeText == 'Share'">
+                  <div class="form-group">
+                    <label>Available End Dates</label>
+                    <input class="form-control" placeholder="To Date" name="dpToDate" [(ngModel)]="toDate"  ngbDatepicker #dt="ngbDatepicker" (click)="dt.toggle()" (dateSelect)="validateAvailableDate($event)">
+          
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>{{transactionTypeText === 'Rent'|| transactionTypeText === 'Share'  ? 'Price Per Day (*)' : 'Price (*)' }}</label>
+                    <input type="number" name="price" min="0.1" class="form-control" [(ngModel)]="product.price" required #price="ngModel"/>
+                    <div *ngIf="price.errors && (price.dirty || price.touched || isSubmitted)">
+                      <p [hidden]="!price.errors.required" class="required-text">
+                        Price is required
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6" *ngIf="transactionTypeText == 'Rent' || transactionTypeText == 'Share' ">
+                  <div class="form-group">
+                    <label>Price Per Week</label>
+                    <input type="number" name="pricePerWeek" min="0.1" class="form-control" [(ngModel)]="product.pricePerWeek" />
+                  </div>
+                </div>
+
+                <div class="col-md-6" *ngIf="transactionTypeText == 'Rent' || transactionTypeText == 'Share'">
+                  <div class="form-group">
+                    <label>Price Per Month</label>
+                    <input type="number" name="pricePerMonth" min="0.1" class="form-control" [(ngModel)]="product.pricePerMonth" />
+                  </div>
+                </div>
+
+                
+
+                <div class="col-md-6" *ngIf="transactionTypeText !== 'Rent' && transactionTypeText !== 'Share'">
+                  <div class="form-group">
+                    <label>Sale Price (*)</label>
+                    <input type="number" name="salePrice" class="form-control" [(ngModel)]="product.salePrice" min="0.1" required #salePrice="ngModel"/>
+                    <div *ngIf="salePrice.errors && (salePrice.dirty || salePrice.touched || isSubmitted)">
+                      <p [hidden]="!salePrice.errors.required" class="required-text">
+                        Sale Price is required
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                
+
+                <div class="col-md-6" *ngIf="transactionTypeText == 'Rent' || transactionTypeText == 'Share'">
+                  <div class="form-group">
+                    <label>Deposite Amount</label>
+                    <input type="number" name="depositAmont" min="0.1" class="form-control" [(ngModel)]="product.depositAmont" />
+                  </div>
+                </div>
+                <div class="col-md-6" *ngIf="transactionTypeText == 'Rent' || transactionTypeText == 'Share'">
+                  <div class="form-group">
+                    <label>Area Distance</label>
+                    <input type="number" name="distance" min="0.1" class="form-control" [(ngModel)]="product.distance" />
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Tax Name</label>
+                    <input type="text" name="taxClass" class="form-control" placeholder="VAT,Sales Tax,..." [(ngModel)]="product.taxClass" />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Tax Value (%)</label>
+                    <input type="number" name="taxValue" class="form-control" placeholder="10" [(ngModel)]="product.taxPercentage" />
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Restrict COD areas</label>
+                    <ng-select bindValue="label" placeholder="Fill out restrict COD areas here"  name="restrictCODAreas" [items]="[]" [addTag]="true" [multiple]="true" [isOpen]="false" [(ngModel)]="product.restrictCODAreas">
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>SKU</label>
+                    <input type="text" name="sku" placeholder="Stock keeping unit" class="form-control" [(ngModel)]="product.sku" />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>UPC</label>
+                    <input type="text" name="upc" placeholder="Univeral product code" class="form-control" [(ngModel)]="product.upc" />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>MPN</label>
+                    <input type="text" name="mpn" placeholder="Manufacturer's part number" class="form-control"
+                      [(ngModel)]="product.mpn" />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>EAN</label>
+                    <input type="text" name="ean" placeholder="European article number" class="form-control"
+                      [(ngModel)]="product.ean" />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>JAN</label>
+                    <input type="text" name="jan" placeholder="Japanese article number" class="form-control"
+                      [(ngModel)]="product.jan" />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>ISBN</label>
+                    <input type="text" name="isbn" placeholder="International standard book number" class="form-control"
+                      [(ngModel)]="product.isbn" />
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Short description</label>
+                    <textarea class="form-control" name="productsdesc" placeholder="Enter some text" [(ngModel)]="product.shortDescription"></textarea>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Description</label>
+                    <div [froalaEditor] [(froalaModel)]="product.description"></div>
+                  </div>
+                </div>
+                <!-- <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Category (*)</label>
+                    <select class="form-control" [(ngModel)]="product.categoryId" name="categoryId">
+                      <option value="">-- No category --</option>
+                      <option *ngFor="let item of tree" [ngValue]="item._id">{{item.name}}</option>
+                    </select>
+                  </div>
+                </div> -->
+                <!-- <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Transaction Type</label>
+                    <select class="form-control" [(ngModel)]="product.transactiontypeId" name="transactiontypeId">
+                      <option value="">-- No category --</option>
+                      <option *ngFor="let item of transactionType" [ngValue]="item._id">{{item.name}}</option>
+                    </select>
+                  </div>
+                </div> -->
+                <div class="col-md-6" *ngIf="product.metaSeo">
+                  <div class="form-group">
+                    <label>Meta keywords</label>
+                    <input type="text" class="form-control" name="metakw" [(ngModel)]="product.metaSeo.keywords"
+                      placeholder="Enter keywords for meta SEO" />
+                  </div>
+                </div>
+                <div class="col-md-6" *ngIf="product.metaSeo">
+                  <div class="form-group">
+                    <label>Meta description</label>
+                    <textarea class="form-control" name="metadesc" [(ngModel)]="product.metaSeo.description"
+                      placeholder="Enter description for meta SEO"></textarea>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <hr>
+                  <h4>Enter zip code or select the free ship areas.</h4>
+                  <span *ngFor="let item of freeShipAreas; let i = index" class="label label-warning position-relative">
+                    {{item.areaType}}: {{item.name ? item.name : item.value}}<a (click)="removeArea(item,i)" class="remove-item">x</a>
+                  </span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <label>Zip Code</label>
+                    <input type="text" name="Zipcode" [(ngModel)]="zipCode" class="form-control" />
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <label>Free Ship Country</label>
+                    <select [(ngModel)]="freeCountry" class="form-control" name="freeCountry" (change)="loadStates(freeCountry.isoCode)">
+                      <option *ngFor="let item of countries" [ngValue]="item">{{item.name}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <label>Free Ship State</label>
+                    <select [(ngModel)]="freeState" class="form-control" name="freeCountry" (change)="loadCities(freeState._id)">
+                      <option *ngFor="let item of states" [ngValue]="item">{{item.name}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <label>Free Ship City</label>
+                    <select [(ngModel)]="freeCity" class="form-control" name="freeCity">
+                      <option *ngFor="let item of cities" [ngValue]="item">{{item.name}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <label style="width: 100%">&nbsp;</label>
+                  <div class="btn btn-success" (click)="addFreeShipAreas()">Add</div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <hr />
+                  <div class="form-group">
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input type="checkbox" name="dailyDeal" [(ngModel)]="product.dailyDeal" /> Daily deal
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input type="checkbox" name="freeShip" [(ngModel)]="product.freeShip" /> Free ship for all
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input type="checkbox" name="active" [(ngModel)]="product.isActive" /> Active
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input type="checkbox" name="notification" [(ngModel)]="product.notification" /> Notifications
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6" *ngIf="product.dailyDeal">
+                  <hr />
+                  <div class="form-group">
+                    <div class="checkbox">
+                      <label>Deal To (UTC time): <span class="label label-info" *ngIf="product.dealTo">{{product?.dealTo | date:'short'}}</span></label>
+                      <div class="row">
+                        <ngb-datepicker [(ngModel)]="dealDate" name="dealTo" (select)="updateDealTime()"></ngb-datepicker>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane" role="tabpanel" [ngClass]="{'show active': tab === 'spec', hide: tab !== 'spec'}">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Specifications</label>
+                  <table class="table">
+                    <tbody class="sortable" [sortablejs]="product.specifications">
+                      <tr *ngFor="let c of product.specifications; let i = index">
+                        <td>
+                          <span>
+                            <i class="fa fa-bars"></i> <strong>{{c.key}}</strong>
+                          </span>
+                        </td>
+                        <td>
+                          <input type="text" name="spec{{i}}" [(ngModel)]="c.value" class="form-control" />
+                        </td>
+                        <td>
+                          <a (click)="removeSpec(i)"><i class="fa fa-trash"></i></a>
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td>
+                          <input type="text" class="form-control" placeholder="Enter specification type" name="newSpec"
+                            [(ngModel)]="newSpecification.key" />
+                        </td>
+                        <td>
+                          <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Enter specification value" name="newChemicalValue"
+                              [(ngModel)]="newSpecification.value" />
+                            <div class="input-group-append">
+                              <button class="btn btn-outline-secondary" type="button" (click)="addSpecification()">Add</button>
+                            </div>
+                          </div>
+                        </td>
+                        <td></td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane" role="tabpanel" [ngClass]="{'show active': tab === 'images', hide: tab !== 'images'}">
+            <h3>Click to set main image.</h3>
+            <div class="row">
+              <div class="col-md-3 text-center" *ngFor="let media of images; let i = index">
+                <img class="img-thumbnail" [src]="media.thumbUrl" [ngClass]="{selected: media._id === mainImage}" />
+
+                <div class="btn-group" role="group">
+                  <button class="btn btn-secondary" type="button" [ngClass]="{'btn-success' : media._id === mainImage}"
+                    (click)="setMain(media)">
+                    <i class="fa fa-check"></i>
+                  </button>
+                  <button class="btn btn-secondary" type="button" (click)="removeImage(media, i)">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <media-select (onSelect)="selectImage($event)" [options]="imagesOptions"></media-select>
+          </div>
+
+          <div class="tab-pane" role="tabpanel" [ngClass]="{'show active': tab === 'catalogs', hide: tab !== 'catalogs'}">
+            <product-variants [product]="product" *ngIf="product?._id"></product-variants>
+            <div class="alert" *ngIf="!product?._id">
+              Please create product then add variants
+            </div>
+          </div>
+
+          <div [hidden]="!product._id" class="tab-pane" role="tabpanel" [ngClass]="{'show active': tab === 'review', hide: tab !== 'review'}">
+            <product-review [productId]="product._id" *ngIf="product._id"></product-review>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="form-group">
+          <hr />
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>

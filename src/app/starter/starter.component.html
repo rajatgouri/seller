@@ -1,0 +1,165 @@
+<div class="row">
+  <div class="col-lg-4 col-md-4">
+    <stat-card [stat]="orderStat" [type]="'order'" *ngIf="orderStat"></stat-card>
+  </div>
+  <div class="col-lg-4 col-md-4">
+    <stat-card [stat]="productStat" [type]="'product'" *ngIf="productStat"></stat-card>
+  </div>
+  <div class="col-lg-4 col-md-4">
+    <stat-card [stat]="saleStat" [type]="'sale'" *ngIf="saleStat"></stat-card>
+  </div>
+  <div class="col-lg-6 col-md-6">
+    <last-order-card></last-order-card>
+  </div>
+  <div class="col-lg-6 col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title"><span class="lstick"></span>Latest Messages from User</h4>
+        <div class="comment-widgets" *ngFor="let item of latestMessages">
+          <div class="d-flex flex-row comment-row">
+            <div class="p-2"><span class="round"><img alt="user" width="50" [src]="item.sender?.avatarUrl"></span></div>
+            <div class="comment-text w-100">
+              <h5>{{item.sender?.name}}</h5>
+              <div class="message-content">
+                <i class="m-b-5">{{item?.text}}</i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-12 col-md-6">
+    <div class="card">
+      <div class="row">
+        <div class="col-lg-6 col-md-6">
+          <div class="card-body little-profile text-center">
+            <div class="pro-img m-t-20"><img alt="user" [src]="shop?.logo?.thumbUrl || '../../assets/images/noImage.jpg'"></div>
+            <h3 class="m-b-0">{{shop.name}}</h3>
+            <h6 class="text-muted"><i class="fa fa-envelope"></i> {{shop.email}}</h6>
+            <h6 class="text-muted"><i class="fa fa-phone-square"></i> {{shop.phoneNumber}}</h6>
+            <h6 class="text-muted"><i class="fa fa-users"></i> {{shop.headerText}}</h6>
+            <h6 class="text-muted"><i class="fa fa-bullhorn"></i> {{shop.announcement}}</h6>
+            <ul class="list-inline soc-pro m-t-30">
+              <li [hidden]="!shop.socials?.facebook"><a [href]="shop.socials?.facebook"><i class="fa fa-facebook-square"></i></a></li>
+              <li [hidden]="!shop.socials?.twitter"><a [href]="shop.socials?.twitter"><i class="fa fa-twitter"></i></a></li>
+              <li [hidden]="!shop.socials?.google"><a [href]="shop.socials?.google"><i class="fa fa-google-plus"></i></a></li>
+              <li [hidden]="!shop.socials?.linkedin"><a [href]="shop.socials?.linkedin"><i class="fa fa-linkedin-square"></i></a></li>
+              <li [hidden]="!shop.socials?.youtube"><a [href]="shop.socials?.youtube"><i class="fa fa-youtube-play"></i></a></li>
+              <li [hidden]="!shop.socials?.instagram"><a [href]="shop.socials?.instagram"><i class="fa fa-instagram"></i></a></li>
+              <li [hidden]="!shop.socials?.flickr"><a [href]="shop.socials?.flickr"><i class="fa fa-flickr"></i></a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6">
+          <div class="text-center bg-light">
+            <div class="p-20 b-r">
+              <h4 class="m-b-0 font-medium">Personal Information</h4>
+            </div>
+          </div>
+          <ul class="list-group">
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-lg-6">
+                  Address: {{shop.address}}
+                </div>
+                <div class="col-lg-6">
+                  City: {{shop.city}}
+                </div>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-lg-6">
+                  State: {{shop.state}}
+                </div>
+                <div class="col-lg-6">
+                  Country: {{shop.country}}
+                </div>
+              </div>
+            </li>
+          </ul>
+          <div class="text-center bg-light">
+            <div class="p-20 b-r">
+              <h4 class="m-b-0 font-medium">Business Information</h4>
+            </div>
+          </div>
+          <ul class="list-group">
+            <li class="list-group-item">
+              Name: {{shop.businessInfo?.name}}
+            </li>
+            <li class="list-group-item">
+              Identifier: {{shop.businessInfo?.identifier}}
+            </li>
+            <li class="list-group-item">
+              Address: {{shop.businessInfo?.address}}
+            </li>
+          </ul>
+        </div>
+        <div class="col-lg-6 col-md-6">
+          <div class="text-center bg-light">
+            <div class="p-20 b-r">
+              <h4 class="m-b-0 font-medium">More Information</h4>
+            </div>
+          </div>
+          <ul class="list-group">
+            <li class="list-group-item">
+              Return Address: {{shop.returnAddress}}
+            </li>
+            <li class="list-group-item">
+              Refund Policy: {{shop.refundPolicy}}
+            </li>
+            <li class="list-group-item">
+              Google anyalytics code: {{shop.gaCode}}
+            </li>
+            <li class="list-group-item">
+              Zip code: {{shop.zipcode}}
+            </li>
+          </ul>
+        </div>
+        <div class="col-lg-6 col-md-6">
+          <div class="text-center bg-light">
+            <div class="p-20 b-r">
+              <h4 class="m-b-0 font-medium">Bank Information</h4>
+            </div>
+          </div>
+          <ul class="list-group">
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-lg-6">
+                  Name: {{shop.bankInfo?.bankName}}
+                </div>
+                <div class="col-lg-6">
+                  ID: {{shop.bankInfo?.bankId}}
+                </div>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-lg-6">
+                  Branch Name: {{shop.bankInfo?.bankBranchName}}
+                </div>
+                <div class="col-lg-6">
+                  Branch ID: {{shop.bankInfo?.bankBranchId}}
+                </div>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-lg-6">
+                  Account name: {{shop.bankInfo?.accountName}}
+                </div>
+                <div class="col-lg-6">
+                  Account Number: {{shop.bankInfo?.accountNumber}}
+                </div>
+              </div>
+            </li>
+            <li class="list-group-item">
+              Swift Code: {{shop.bankInfo?.swiftCode}}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

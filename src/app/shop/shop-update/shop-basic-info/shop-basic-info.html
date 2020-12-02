@@ -1,0 +1,151 @@
+<form role="form" #frm="ngForm" (submit)="submit(frm)" ngNativeValidate method="post">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Shop Name (*)</label>
+        <input type="text" class="form-control" placeholder="Enter shop name" [(ngModel)]="shop.name" required name="name" #name="ngModel" />
+        <div *ngIf="name.errors && (name.dirty || name.touched || isSubmitted)">
+          <p [hidden]="!name.errors.required" class="required-text">
+            Please enter shop!
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Shop Alias</label>
+        <input type="text" class="form-control" placeholder="Enter shop alias" [(ngModel)]="shop.alias" name="alias" #name="ngModel" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Address</label>
+        <input type="text" class="form-control" placeholder="Enter address" [(ngModel)]="shop.address" name="address" #address="ngModel" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Doing Business as</label>
+        <!-- <input type="text" class="form-control" placeholder="Enter address" [(ngModel)]="shop.address" name="address" #address="ngModel" /> -->
+        <select class="custom-select" [(ngModel)]="shop.shopType" name="shopType" #shopType="ngModel" >
+          <option disabled selected value=''>Doing Business as</option>
+          <option   value='Sell'>Seller</option>
+          <option   value='Rent'>Renter</option>
+          <option   value='Trade'>Trader</option>
+
+        </select>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>City</label>
+        <input type="text" class="form-control" placeholder="Enter city" [(ngModel)]="shop.city" name="city" #city="ngModel" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>State</label>
+        <input type="text" class="form-control" placeholder="Enter state" [(ngModel)]="shop.state" name="state" #state="ngModel" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Country</label>
+        <input type="text" class="form-control" placeholder="Enter country" [(ngModel)]="shop.country" name="country" #country="ngModel" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Zip code</label>
+        <input type="text" class="form-control" placeholder="Enter zip code" [(ngModel)]="shop.zipcode" name="zipcode" #zipcode="ngModel" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Email (*)</label>
+        <input type="text" class="form-control" placeholder="user@example.com" disabled [(ngModel)]="shop.email" name="email" required #email="ngModel" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" />
+      <div *ngIf="email.errors && (email.dirty || email.touched || isSubmitted)">
+        <p [hidden]="!email.errors.required" class="required-text">
+          Email is required.
+        </p>
+        <p [hidden]="!email.errors.pattern" class="required-text">
+          Please enter a valid email address.
+        </p>
+      </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <!-- <div class="form-group">
+        <label>Phone number</label>
+        
+        <input type="text" class="form-control" disabled placeholder="Enter phone number" [(ngModel)]="shop.phoneNumber" name="phoneNumber" #phoneNumber="ngModel" /> 
+      </div> -->
+      <div class="form-group">
+        <label>Phone number</label>
+
+          <div class="input-group mb-3">
+            <ngx-intl-tel-input  class="dialphone w-85" 
+            [selectFirstCountry]="false" #ngxIntlTelInput
+            name="phone" required #phone="ngModel" [(ngModel)]="shop.phoneNumber"  (ngModelChange)="changePhoneNumber($event)"> 
+            </ngx-intl-tel-input>
+
+            <app-phoneverify [dialCode]="dialCode" [phoneNumber]="shop.phoneNumber" [isVerified]="isVerified"
+            [isInValid]="phone.errors && (phone.dirty || phone.touched)" (approve)="onVerifyApprove($event)"></app-phoneverify>
+
+          </div>
+          <div *ngIf="phone.errors && (phone.touched || submitted)">
+            <p [hidden]="!phone.errors.minlength" class="error" translate> Phone must be 9 characters </p>
+            <p [hidden]="!phone.errors.pattern" class="error" translate> Phone must be number </p>
+            <p [hidden]="!phone.errors.required" class="error" translate> Phone number is required </p>
+          </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="form-group">
+        <label>Return Address</label>
+        <input type="text" class="form-control" placeholder="Enter return address" [(ngModel)]="shop.returnAddress" name="returnAddress" />
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="form-group">
+        <label>Header Text</label>
+        <input type="text" class="form-control" placeholder="Enter text" [(ngModel)]="shop.headerText" name="text" />
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="form-group">
+        <label>Announcement</label>
+        <textarea type="text" class="form-control" placeholder="fuzzy fuzzy ..." [(ngModel)]="shop.announcement" name="announcement" cols="3"></textarea>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="form-group">
+        <label>Google anyalytics code</label>
+        <input type="text" class="form-control" placeholder="Enter Google anyalytics code" [(ngModel)]="shop.gaCode" name="gaCode" #gaCode="ngModel" />
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="form-group">
+        <label>Logo <media-select (onSelect)="selectLogo($event)"></media-select></label><br />
+        <img [src]="shop?.logo?.thumbUrl" class="avatar" width="150" *ngIf="shop?.logo" />
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="form-group">
+        <label>Verification Issue <media-select (onSelect)="selectVerificationIssue($event)"></media-select></label><br />
+        <a href="{{shop?.verificationIssue?.fileUrl}}" download target="_blank">{{shop?.verificationIssue?.name}}</a>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="form-group">
+        <label>Banner <media-select (onSelect)="selectBanner($event)"></media-select></label><br />
+        <img [src]="shop?.banner?.thumbUrl" class="avatar" width="150" *ngIf="shop?.banner" />
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="form-group">
+        <button class="btn btn-primary" type="submit">Save</button>
+      </div>
+    </div>
+  </div>
+</form>

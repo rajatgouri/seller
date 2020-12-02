@@ -1,0 +1,105 @@
+<div class="row">
+  <div class="col col-md-3">
+    <profile-card [user]="user"></profile-card>
+  </div>
+  <div class="col-md-9">
+    <div class="card">
+      <div class="card-body">
+        <form role="form" #frm="ngForm" (submit)="submit(frm)" ngNativeValidate method="post">
+          <div class="row">
+            <div class="col col-md-6">
+              <div class="form-group">
+                <label>First and last name (*)</label>
+                <input type="text" class="form-control" placeholder="Enter name" [(ngModel)]="info.name" required name="name" #name="ngModel" />
+                <div *ngIf="name.errors && (name.dirty || name.touched || isSubmitted)">
+                  <p [hidden]="!name.errors.required" class="required-text">
+                    Please enter user first name and last name!
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col col-md-6">
+              <div class="form-group">
+                <label>Email (*)</label>
+                <input type="email" class="form-control" placeholder="user@example.com" [(ngModel)]="info.email" name="email" required #email="ngModel" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" disabled />
+                <div *ngIf="email.errors && (email.dirty || email.touched || isSubmitted)">
+                  <p [hidden]="!email.errors.required" class="required-text">
+                    Email is required.
+                  </p>
+                  <p [hidden]="!email.errors.pattern" class="required-text">
+                    Please enter a valid email address.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col col-md-6">
+              <div class="form-group">
+                <label>Phone number</label>
+
+                  <div class="input-group mb-3">
+                    <ngx-intl-tel-input  class="dialphone w-85" 
+                    [selectFirstCountry]="false" #ngxIntlTelInput
+                    name="phone" required #phone="ngModel" [(ngModel)]="info.phoneNumber"  (ngModelChange)="changePhoneNumber($event)"> 
+                    </ngx-intl-tel-input>
+  
+                    <app-phoneverify [dialCode]="dialCode" [phoneNumber]="info.phoneNumber" [isVerified]="isVerified"
+                    [isInValid]="phone.errors && (phone.dirty || phone.touched)" (approve)="onVerifyApprove($event)"></app-phoneverify>
+  
+                  </div>
+                  <div *ngIf="phone.errors && (phone.touched || submitted)">
+                    <p [hidden]="!phone.errors.minlength" class="error" translate> Phone must be 9 characters </p>
+                    <p [hidden]="!phone.errors.pattern" class="error" translate> Phone must be number </p>
+                    <p [hidden]="!phone.errors.required" class="error" translate> Phone number is required </p>
+                  </div>
+              </div>
+            </div>
+            <div class="col col-md-6">
+              <div class="form-group">
+                <label>Address</label>
+                <input type="text" class="form-control" [(ngModel)]="info.address" name="address" />
+              </div>
+            </div>
+            <div class="col col-md-6">
+              <div class="form-group">
+                <label>Password (*)</label>
+                <input type="password" class="form-control" [(ngModel)]="info.password" name="password" #password="ngModel" minlength="6" />
+                <div *ngIf="password.errors && (password.dirty || password.touched || isSubmitted)">
+                  <p [hidden]="!password.errors.minlength" class="required-text">
+                    Password must be at least 6 characters!
+                  </p>
+                </div>
+                <p class="help help-block">
+                  <small>Blank to keep current password</small>
+                </p>
+              </div>
+            </div>
+            <div class="col col-md-6">
+              <div class="row">
+                <div class="col col-md-6">
+                  <div class="form-group">
+                    <label>Avatar</label>
+                    <div class="clearfix"></div>
+                    <img [src]="avatarUrl" class="avatar" width="150" />
+                  </div>
+                </div>
+                <div class="col col-md-6">
+                  <div class="form-group">
+                    <label>&nbsp;</label>
+                    <file-upload [options]="avatarOptions"></file-upload>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col col-md-12">
+              <div class="form-group">
+                <button type="button" class="btn btn-primary" (click)="complain()">Complain</button>
+                &nbsp;
+                <button class="btn btn-primary" type="submit">Save</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

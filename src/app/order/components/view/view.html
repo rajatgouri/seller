@@ -1,0 +1,349 @@
+<form role="form" #frm="ngForm" (submit)="submit(frm)" novalidate>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="panel panel-default">
+          <div class="panel-heading resume-heading">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="row">
+                  <div class="col-xs-12 col-sm-3">
+                    <figure>
+                      <img class="img-circle img-responsive" [src]="avatarUrl | checkPhoto">
+                    </figure>
+                  </div>
+                  <div class="col-xs-12 col-sm-9">
+                    <ul class="list-group">
+                      <li class="list-group-item">
+                        <div class="row">
+                          <div class="col-md-2">
+                            Order Id:
+                          </div>
+                          <div class="col-md-10">
+                            {{order.orderId}}
+                          </div>
+                        </div>
+                      </li>
+                      <li class="list-group-item">
+                        <div class="row">
+                          <div class="col-md-2">
+                            Created at:
+                          </div>
+                          <div class="col-md-4">
+                            {{order.createdAt | date:'short'}}
+                          </div>
+                          <div class="col-md-6">
+                            IP: {{order.userIP}}
+                          </div>
+                        </div>
+                      </li>
+                      <li class="list-group-item">
+                        <div class="row">
+                          <div class="col-md-2">
+                            Status:
+                          </div>
+                          <div class="col-md-10">
+                            <select name="status" (change)="query()" [(ngModel)]="order.status" #status="ngModel">
+                              <option value="completed">Completed</option>
+                              <option value="shipping">Shipping</option>
+                              <option value="pending">Pending</option>
+                              <option value="progressing">Progressing</option>
+                              <option value="refunded">Refunded</option>
+                              <option value="cancelled">Cancelled</option>
+                              <option value="product-return">Product Return</option>
+                            </select>
+                          </div>
+                        </div>
+                      </li>
+                      <li class="list-group-item" *ngIf="this.productTransactionType == 'Rent' || this.productTransactionType == 'Share'">
+                        <div class="row">
+                          <div class="col-md-2">
+                            Booked For:
+                          </div>
+                          <div class="col-md-10">
+                            <span *ngIf="order.startDate && order.endDate">{{order?.startDate | date :'M/d/yyyy'}} - {{order?.endDate | date :'M/d/yyyy'}}</span>
+                          </div>
+                        </div>
+                      </li>
+                      <li class="list-group-item">
+                        <div class="row">
+                          <div class="col-md-6">
+                            Quantity(s): {{order?.quantity}}
+                          </div>
+                          <div class="col-md-6">
+                            Product Price: {{order?.productPrice | currency}}
+                          </div>
+                          <div class="col-md-6">
+                            Shipping Price: {{order?.shippingPrice | currency}}
+                          </div>
+                          <div class="col-md-6">
+                            Taxes Price: {{order?.taxPrice | currency}}
+                          </div>
+                          <div class="col-md-6" *ngIf="this.productTransactionType == 'Rent' || this.productTransactionType == 'Share'">
+                            Deposite Price: {{order?.depositAmount | currency}}
+                          </div>
+                          <div class="col-md-6">
+                            Total Price:
+                            <strong><span class="label label-danger">{{order?.totalPrice | currency}}</span></strong>
+                          </div>
+                          <div class="col-md-6">
+                            Commission Rate/Price: {{order?.commissionRate *100}}% / {{order?.commission | currency}}
+                          </div>
+                          <div class="col-md-6">
+                            Balance:
+                            <strong><span class="label label-danger">{{order?.balance | currency}}</span></strong>
+                          </div>
+                          <div class="col-md-6" *ngIf="this.productTransactionType == 'Rent' || this.productTransactionType == 'Share'">
+                          <div *ngIf="this.order?.refund != ''">
+                            Refunded Amount: {{order?.refund.Amount | currency}}
+                          </div>
+                          </div>
+                          <div class="col-md-6" *ngIf="this.productTransactionType == 'Rent' || this.productTransactionType == 'Share'">
+                            <div *ngIf="this.order?.refund != ''">
+                            Refund id: {{order?.refund.refund_id}}
+                          </div>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <h3>Product details</h3>
+                <ul class="list-group">
+                  <li class="list-group-item">
+                    <div class="row">
+                      <div class="col-md-2">
+                        Product name:
+                      </div>
+                      <div class="col-md-6">
+                        {{order.productDetails?.name}}
+                      </div>
+                      <div class="col-md-1">
+                        Type:
+                      </div>
+                      <div class="col-md-3">
+                        <span class="label label-primary" *ngIf="order.productDetails?.type === 'physical'">Physical</span>
+                        <span class="label label-danger" *ngIf="order.productDetails?.type === 'digital'">Digital</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row">
+                      <div class="col-md-2">
+                        Transaction Type:
+                      </div>
+                      <div class="col-md-10">
+                        <span *ngIf="order.productDetails?.transactionTypeDetails">{{order.productDetails?.transactionTypeDetails?.name}}</span>
+                        <span *ngIf="!order.productDetails?.transactionTypeDetails">Buy</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row">
+                      <div class="col-md-2">
+                        Variant:
+                      </div>
+                      <div class="col-md-10">
+                        <span *ngIf="order.variantDetails">
+                          <span *ngFor="let option of order.variantDetails.options">
+                            {{option.displayText || option.optionKey}}: {{option.value}}
+                          </span>
+                        </span>
+                        <span class="text-muted" [hidden]="order.variantDetails">N/A</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row">
+                      <div class="col-md-2">
+                        Price:
+                      </div>
+                      <div class="col-md-10">
+                        <span *ngIf="order.variantDetails">{{order.variantDetails?.price | currency}}</span>
+                        <span *ngIf="!order.variantDetails && order.productDetails">{{order.productDetails?.price |
+                          currency}}</span>
+                      </div>
+                    </div>
+                  </li>
+
+                  <li class="list-group-item" *ngIf="this.productTransactionType == 'Rent' || this.productTransactionType == 'Share'">
+                    <div class="row">
+                      <div class="col-md-2">
+                        Price Per Week:
+                      </div>
+                      <div class="col-md-10">
+                        <span *ngIf="order.variantDetails">{{order.variantDetails?.price | currency}}</span>
+                        <span *ngIf="!order.variantDetails && order.productDetails">{{order.productDetails?.pricePerWeek |
+                          currency}}</span>
+                      </div>
+                    </div>
+                  </li>
+
+                  <li class="list-group-item" *ngIf="this.productTransactionType == 'Rent' || this.productTransactionType == 'Share'">
+                    <div class="row">
+                      <div class="col-md-2">
+                        Price Per Month:
+                      </div>
+                      <div class="col-md-10">
+                        <span *ngIf="order.variantDetails">{{order.variantDetails?.price | currency}}</span>
+                        <span *ngIf="!order.variantDetails && order.productDetails">{{order.productDetails?.pricePerMonth |
+                          currency}}</span>
+                      </div>
+                    </div>
+                  </li>
+
+                  <li class="list-group-item" *ngIf="this.productTransactionType == 'Rent' || this.productTransactionType == 'Share'">
+                    <div class="row">
+                      <div class="col-md-2">
+                        Available For Dates:
+                      </div>
+                      <div class="col-md-10">
+                        <span *ngIf="order.productDetails && (order.productDetails.startDate || order.productDetails.endDate)">
+                          {{order?.productDetails?.startDate | date :'M/d/yyyy'}} - {{order?.productDetails?.endDate | date :'M/d/yyyy'}}
+                        </span>
+                      </div>
+                    </div>
+                  </li>
+                  
+                  <li class="list-group-item">
+                    <div class="row">
+                      <div class="col-md-2">
+                        Sale Price:
+                      </div>
+                      <div class="col-md-10">
+                        <span *ngIf="order.variantDetails">{{order.variantDetails?.salePrice | currency}}</span>
+                        <span *ngIf="!order.variantDetails && order.productDetails">{{order.productDetails?.salePrice |
+                          currency}}</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row">
+                      <div class="col-md-2">
+                        Description:
+                      </div>
+                      <div class="col-md-10" [innerHTML]="order?.productDetails?.description">
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+                <br>
+                <h3>Shipping details</h3>
+                <ul class="list-group">
+                  <li class="list-group-item">
+                    <div class="row">
+                      <div class="col-md-2">
+                        Name:
+                      </div>
+                      <div class="col-md-10">
+                        {{order?.firstName}} {{order?.lastName}}
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row">
+                      <div class="col-md-2">
+                        Email:
+                      </div>
+                      <div class="col-md-4">
+                        {{order?.email}}
+                      </div>
+                      <div class="col-md-2">
+                        Phone Number:
+                      </div>
+                      <div class="col-md-4">
+                        {{order?.phoneNumber}}
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row">
+                      <div class="col-md-2">
+                        Country:
+                      </div>
+                      <div class="col-md-10">
+                        {{order?.country}}
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row">
+                      <div class="col-md-2">
+                        State:
+                      </div>
+                      <div class="col-md-10">
+                        {{order?.state}}
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row">
+                      <div class="col-md-2">
+                        City:
+                      </div>
+                      <div class="col-md-10">
+                        {{order?.city}}
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row">
+                      <div class="col-md-2">
+                        Shipping Address:
+                      </div>
+                      <div class="col-md-10">
+                        {{order?.shippingAddress}}
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row">
+                      <div class="col-md-12">
+                        User Note:
+                        <p class="line-text">{{order?.userNote}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row">
+                      <div class="col-md-2">
+                        Shipping Type (*):
+                      </div>
+                      <div class="col-md-4">
+                        <input required type="text" class="form-control" placeholder="Enter shipping type" [(ngModel)]="order.shippingMethod"
+                          name="shippingMethod" #shippingMethod="ngModel" />
+                        <div *ngIf="shippingMethod.errors && (shippingMethod.dirty || shippingMethod.touched || isSubmitted)">
+                          <p [hidden]="!shippingMethod.errors.required" class="required-text">
+                            Please enter shipping method!
+                          </p>
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        Code (*):
+                      </div>
+                      <div class="col-md-4">
+                        <input required type="text" class="form-control" placeholder="Enter shipping code" [(ngModel)]="order.shippingCode"
+                          name="shippingCode" #shippingCode="ngModel" />
+                        <div *ngIf="shippingCode.errors && (shippingCode.dirty || shippingCode.touched || isSubmitted)">
+                          <p [hidden]="!shippingCode.errors.required" class="required-text">
+                            Please enter shipping code!
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+                <br>
+                <button class="btn btn-success" type="submit">Update Shipping</button>&nbsp;
+                <a class="btn btn-warning" [routerLink]="['/orders/list']">Cancel</a>&nbsp;
+                <span *ngIf="this.productTransactionType == 'Rent' || this.productTransactionType == 'Share'">
+                  <button class="btn btn-success" (click)="openModal()" *ngIf="returnDeposit && order?.depositAmount > 0" type="button">Return Deposit</button>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

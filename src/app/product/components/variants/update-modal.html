@@ -1,0 +1,43 @@
+<div class="modal-header">
+  <h4 class="modal-title">Update variant</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Close')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form (submit)="update(frm)" #frm="ngForm">
+    <div class="row">
+      <div class="col-md-12" *ngIf="product.type === 'digital'">
+        <div class="form-group">
+          <label>Digital File <media-select (onSelect)="selectMedia($event)"></media-select></label>
+          <img src="assets/images/media-exist.png" width="45px" *ngIf="item.digitalFileId">
+          <img src="assets/images/nofile-available.png" width="45px" *ngIf="!item.digitalFileId">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Price</label>
+          <input type="number" class="form-control" name="price" placeholder="100" [(ngModel)]="item.price" />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Sale Price</label>
+          <input type="number" class="form-control" name="salePrice" placeholder="100" [(ngModel)]="item.salePrice" />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Stock quantity</label>
+          <input type="number" class="form-control" name="stock" placeholder="100" [(ngModel)]="item.stockQuantity" />
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="form-group">
+          <label>&nbsp;</label>
+          <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

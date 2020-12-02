@@ -1,0 +1,93 @@
+<form role="form" #frm="ngForm" (submit)="submit(frm)" novalidate>
+  <div class="row">
+    <div class="col col-md-6">
+      <div class="form-group">
+        <label>Default Price (*)</label>
+        <input type="number" name="defaultPrice" min="0" step="0.1" class="form-control" [(ngModel)]="shop.shippingSettings.defaultPrice"
+          required #defaultPrice="ngModel" />
+        <div *ngIf="defaultPrice.errors && (defaultPrice.dirty || defaultPrice.touched || isSubmitted)">
+          <p [hidden]="!defaultPrice.errors.required" class="required-text">
+            Default price is required!
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col col-md-6">
+      <div class="form-group">
+        <label>Price For Each Product Quantity (*)</label>
+        <input type="number" name="perQuantityPrice" min="0" step="0.1" class="form-control" [(ngModel)]="shop.shippingSettings.perQuantityPrice"
+          required #perQuantityPrice="ngModel" />
+        <div *ngIf="perQuantityPrice.errors && (perQuantityPrice.dirty || perQuantityPrice.touched || isSubmitted)">
+          <p [hidden]="!perQuantityPrice.errors.required" class="required-text">
+            Price for each product quantity is required!
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col col-md-6">
+      <div class="form-group">
+        <label>Ship From (*)</label>
+        <select [(ngModel)]="shop.shippingSettings.shipFrom" class="form-control" name="shipFrom" required #shipFrom="ngModel">
+          <option *ngFor="let item of countries" [ngValue]="item.isoCode">{{item.name}}</option>
+        </select>
+        <div *ngIf="shipFrom.errors && (shipFrom.dirty || shipFrom.touched || isSubmitted)">
+          <p [hidden]="!shipFrom.errors.required" class="required-text">
+            This field is required!
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col col-md-6">
+      <div class="form-group">
+        <label>Processing Time In Day (*)</label>
+        <select class="form-control" name="processingTime" [(ngModel)]="shop.shippingSettings.processingTime" required
+          #processingTime="ngModel">
+          <option value="one2Three">One to three working days</option>
+          <option value="Four2Five">Four to five working days</option>
+          <option value="Five2Eight">Five to eight working days</option>
+          <option value="other">Other</option>
+        </select>
+        <div *ngIf="processingTime.errors && (processingTime.dirty || processingTime.touched || isSubmitted)">
+          <p [hidden]="!processingTime.errors.required" class="required-text">
+            Processing time in day is required!
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col col-md-12">
+      <div class="form-group">
+        <label>Shipping Policy (*)</label>
+        <textarea name="shippingPolicy" rows="3" class="form-control" placeholder="Enter Shipping Policy" [(ngModel)]="shop.shippingSettings.shippingPolicy"
+          #shippingPolicy="ngModel" required></textarea>
+        <div *ngIf="shippingPolicy.errors && (shippingPolicy.dirty || shippingPolicy.touched || isSubmitted)">
+          <p [hidden]="!shippingPolicy.errors.required" class="required-text">
+            Shipping Policy is required!
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col col-md-12">
+      <div class="form-group">
+        <label>Refund Policy (*)</label>
+        <textarea name="refundPolicy" rows="3" class="form-control" placeholder="Enter Refund Policy" [(ngModel)]="shop.shippingSettings.refundPolicy"
+          #refundPolicy="ngModel" required></textarea>
+        <div *ngIf="refundPolicy.errors && (refundPolicy.dirty || refundPolicy.touched || isSubmitted)">
+          <p [hidden]="!refundPolicy.errors.required" class="required-text">
+            Refund policy is required!
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col col-md-12">
+      <div class="form-group">
+        <label><input type="checkbox" name="storeWideShipping" [(ngModel)]="shop.storeWideShipping" #storeWideShipping="ngModel" />
+          Store Wide Shipping</label>
+      </div>
+    </div>
+    <div class="col col-md-12">
+      <div class="form-group">
+        <button class="btn btn-primary" type="submit">Save</button>
+      </div>
+    </div>
+  </div>
+</form>

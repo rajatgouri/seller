@@ -1,0 +1,73 @@
+<div class="row">
+  <div class="col col-md-3">
+    <div class="card">
+      <div class="card-body">
+        <div class="nav flex-column nav-pills">
+          <a class="nav-link active" [ngClass]="{active: tab == 'basic'}" (click)="changeTab('basic')">Basic Info</a>
+
+          <a class="nav-link" [ngClass]="{active: tab == 'business'}" (click)="changeTab('business')">Business Info</a>
+
+          <a class="nav-link" [ngClass]="{active: tab == 'social'}" (click)="changeTab('social')">Social Info</a>
+
+          <a class="nav-link" [ngClass]="{active: tab == 'shipping'}" (click)="changeTab('shipping')">Shipping Info</a>
+
+          <a class="nav-link" [ngClass]="{active: tab == 'notification'}" (click)="changeTab('notification')">Notification Info</a>
+
+          <a class="nav-link" [ngClass]="{active: tab == 'bank'}" (click)="changeTab('bank')">Bank Info</a>
+
+          <a class="nav-link" [ngClass]="{active: tab == 'review'}" (click)="changeTab('review')">Reviews From User</a>
+        </div>
+
+        <hr />
+
+        <h3>Verify your social account</h3>
+        <p>
+          <strong>Facebook: </strong> {{socialConnected?.facebook ? 'Verified' : 'Not verified'}} <br />
+          <strong>Google: </strong> {{socialConnected?.google ? 'Verified' : 'Not verified'}} <br />
+          <strong>Twitter: </strong> {{socialConnected?.twitter ? 'Verified' : 'Not verified'}}
+        </p>
+        <hr />
+        <div class="form-group text-center socials-box">
+          <div class="social-login facebook">
+            <facebook-login (onConnected)="onConnected($event)"></facebook-login>
+          </div>
+          <div class="social-login google">
+            <google-login (onConnected)="onConnected($event)"></google-login>
+          </div>
+          <p class="text-center">
+            <a [href]="twitterConnectLink" class="btn btn-info"><i class="fa fa-twitter"></i> Twitter</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9">
+    <div class="card">
+      <div class="card-body">
+        <div class="tab-content">
+          <div class="shop-tab-block show active" *ngIf="tab === 'basic'">
+            <shop-basic-info [shop]="shop"></shop-basic-info>
+          </div>
+          <div class="shop-tab-block" *ngIf="tab === 'business'">
+            <shop-business-info [shop]="shop"></shop-business-info>
+          </div>
+          <div class="shop-tab-block" *ngIf="tab === 'social'">
+            <shop-social-info [shop]="shop"></shop-social-info>
+          </div>
+          <div class="shop-tab-block" *ngIf="tab === 'shipping'">
+            <shop-shipping-info [shop]="shop"></shop-shipping-info>
+          </div>
+          <div class="shop-tab-block" *ngIf="tab === 'notification'">
+            <shop-notification-info [shop]="shop"></shop-notification-info>
+          </div>
+          <div class="shop-tab-block" *ngIf="tab === 'bank'">
+            <shop-bank-info [shop]="shop"></shop-bank-info>
+          </div>
+          <div class="shop-tab-block" *ngIf="tab === 'review'">
+            <shop-review [shopId]="shop._id" *ngIf="shop._id"></shop-review>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

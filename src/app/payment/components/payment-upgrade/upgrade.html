@@ -1,0 +1,29 @@
+<div class="card card-body">
+  <div class="container">
+    <div class="row text-center mb-4">
+      <div class="col-md-12" *ngIf="!total && !isLoading">
+        <p class="text-center text-danger">There is no items yet..</p>
+      </div>
+      <div class="col-md-4" *ngFor="let item of packages">
+        <div class="card mb-4 shadow-sm">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">{{item?.name}}</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">{{item?.price | currency}}
+              <small class="text-muted">/ {{item.numDays}}
+                <span *ngIf="item.numDays > 1"> days</span>
+                <span *ngIf="item.numDays < 2"> day</span>
+              </small>
+            </h1>
+            <div class="des-hover">
+              {{item?.description | slice:0:100}}{{item?.description.length > 100 ? '...' : ''}}
+              <span>{{item?.description}}</span>
+            </div>
+            <button type="button" class="btn btn-lg btn-block btn-primary" (click)="payment(item)">Buy Package</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

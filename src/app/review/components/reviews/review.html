@@ -1,0 +1,26 @@
+<div class="card">
+  <h3 class="card-title">
+    Review total ({{total}})
+  </h3>
+  <div class="comment-widgets" *ngFor="let item of reviews">
+    <div class="d-flex flex-row comment-row">
+      <div class="p-2"><span class="round"><img alt="user" width="50px" [src]="item.rater.avatarUrl"></span></div>
+      <div class="comment-text w-100">
+        <h5>{{item?.rater?.name}}</h5>
+        <i>{{item?.comment}}</i>
+        <div class="comment-footer">
+          <span class="text-muted pull-right">{{item?.createdAt | date: 'short'}}</span>
+          <star-rating [rate]="item.rating"></star-rating>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="display-inline" [hidden]="total < take">
+    <div class="pull-right">
+      <ngb-pagination [collectionSize]="total" [(page)]="page" [maxSize]="5" [pageSize]="take" (pageChange)="query()"></ngb-pagination>
+    </div>
+  </div>
+  <div class="search-line" *ngIf="!total">
+    <h5 class="badge badge-warning" translate>There is no review yet..</h5>
+  </div>
+</div>

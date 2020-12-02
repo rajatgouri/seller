@@ -1,0 +1,541 @@
+<div class="card">
+  <div class="card-body">
+    <form (submit)="submit(frm)" #frm="ngForm" *ngIf="account">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Type</label>
+            <select [(ngModel)]="account.type" (change)="onChangeAccount($event)" class="form-control"
+              name="accountType" #accountType="ngModel" required>
+              <option value="bank-account">Bank Account</option>
+              <option value="paypal">Paypal</option>
+              <option value="stripe">Stripe</option>
+
+            </select>
+            <div *ngIf="accountType.errors && (accountType.dirty || accountType.touched || isSubmitted)">
+              <p [hidden]="!accountType.errors.required" class="required-text">
+                Please select account type!
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12" *ngIf="account.type === 'paypal'">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Paypal Account (*)</label>
+                <input type="text" name="paypalAccount" #paypalAccount="ngModel" class="form-control" required
+                  placeholder="Enter paypal account" [(ngModel)]="account.paypalAccount" />
+                <div *ngIf="paypalAccount.errors && (paypalAccount.dirty || paypalAccount.touched || isSubmitted)">
+                  <p [hidden]="!paypalAccount.errors.required" class="required-text">
+                    Please enter paypal account!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12" *ngIf="account.type === 'bank-account'">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Recipient's name (*)</label>
+                <input type="text" name="accountHolderName" #accountHolderName="ngModel" class="form-control"
+                  placeholder="Enter recipient's name" [(ngModel)]="account.accountHolderName" required />
+                <div
+                  *ngIf="accountHolderName.errors && (accountHolderName.dirty || accountHolderName.touched || isSubmitted)">
+                  <p [hidden]="!accountHolderName.errors.required" class="required-text">
+                    Please enter recipient's name!
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Account Number (*)</label>
+                <input type="text" name="accountNumber" #accountNumber="ngModel" class="form-control"
+                  placeholder="Enter account number" [(ngModel)]="account.accountNumber" required />
+                <div *ngIf="accountNumber.errors && (accountNumber.dirty || accountNumber.touched || isSubmitted)">
+                  <p [hidden]="!accountNumber.errors.required" class="required-text">
+                    Please enter account number!
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Bank Name (*)</label>
+                <input type="text" name="bankName" #bankName="ngModel" class="form-control"
+                  placeholder="Enter bank name" [(ngModel)]="account.bankName" required />
+                <div *ngIf="bankName.errors && (bankName.dirty || bankName.touched || isSubmitted)">
+                  <p [hidden]="!bankName.errors.required" class="required-text">
+                    Please enter bank name!
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Bank Address (*)</label>
+                <input type="text" name="bankAddress" #bankAddress="ngModel" class="form-control"
+                  placeholder="Enter bank address" [(ngModel)]="account.bankAddress" required />
+                <div *ngIf="bankAddress.errors && (bankAddress.dirty || bankAddress.touched || isSubmitted)">
+                  <p [hidden]="!bankAddress.errors.required" class="required-text">
+                    Please enter bank address!
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>International Bank Account Number</label>
+                <input type="text" name="iban" #iban="ngModel" class="form-control" placeholder="Enter number"
+                  [(ngModel)]="account.iban" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Worldwide Interbank Financial Telecommunication (8 or 11 characters)</label>
+                <input type="text" name="swiftCode" #swiftCode="ngModel" [minlength]="8" [maxlength]="11"
+                  class="form-control" placeholder="Enter code" [(ngModel)]="account.swiftCode" />
+                <div *ngIf="routingNumber.errors && (routingNumber.dirty || routingNumber.touched || isSubmitted)">
+                  <p [hidden]="!routingNumber.errors.minlength" class="error" translate>
+                    SWIFT Code must be 8 or 11 characters
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>UK Bank Code (6 characters)</label>
+                <input type="text" name="sortCode" #sortCode="ngModel" [minlength]="6" [maxlength]="6"
+                  class="form-control" placeholder="Enter code" [(ngModel)]="account.sortCode" />
+                <div *ngIf="sortCode.errors && (sortCode.dirty || sortCode.touched || isSubmitted)">
+                  <p [hidden]="!sortCode.errors.minlength" class="error" translate>
+                    UK Bank Code must be 6 characters
+
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>American Bankers Association Number (9 characters)</label>
+                <input type="text" name="routingNumber" #routingNumber="ngModel" [minlength]="9" [maxlength]="9"
+                  class="form-control" placeholder="Enter number" [(ngModel)]="account.routingNumber" />
+                <div *ngIf="routingNumber.errors && (routingNumber.dirty || routingNumber.touched || isSubmitted)">
+                  <p [hidden]="!routingNumber.errors.minlength" class="error" translate>
+                    American Bankers Association Number must be 9 characters
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Indian Financial System Code (11 characters)</label>
+                <input type="text" name="ifscCode" #ifscCode="ngModel" [minlength]="11" [maxlength]="11"
+                  class="form-control" placeholder="Enter code" [(ngModel)]="account.ifscCode" />
+                <div *ngIf="ifscCode.errors && (ifscCode.dirty || ifscCode.touched || isSubmitted)">
+                  <p [hidden]="!ifscCode.errors.minlength" class="error" translate>
+                    Indian Financial System Code must be 11 characters
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Any other local Bank Code</label>
+                <input type="text" name="routingCode" #routingCode="ngModel" class="form-control"
+                  placeholder="Enter code" [(ngModel)]="account.routingCode" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12" *ngIf="account.type === 'stripe'">
+          <div class="row">
+            <div class="col-md-6 ">
+              <div class="form-group">
+                <label>Account Type (*)</label>
+                <select name="account_type" class="form-control" [(ngModel)]="account.account_type" placeholder="Select Account Type"  required [attr.disabled]="isUpdate === true? 'disabled': null">
+                  <option selected value="individual">Individual</option>
+                  <option value="company">Company</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="account.account_type == 'company'">
+              <div class="col-12 mb-3">
+                <h5>Company Details</h5>
+              </div>
+              <div class="col-md-6 ">
+                <div class="form-group">
+                  <label>Company Name (*)</label>
+                  <input type="text" name="companyname" #companyName="ngModel" class="form-control"
+                    placeholder="Enter company name" [(ngModel)]="account.company.name" required />
+                  <div *ngIf="companyName.errors && (companyName.dirty || companyName.touched || isSubmitted)">
+                    <p [hidden]="!companyName.errors.required" class="required-text">
+                      Please enter company name!
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 ">
+                <div class="form-group">
+                  <label>Tax Id (*)</label>
+                  <input type="text" name="taxid" #taxId="ngModel" class="form-control" placeholder="Enter tax id"
+                    [(ngModel)]="account.company.taxId" required />
+                  <div *ngIf="taxId.errors && (taxId.dirty || taxId.touched || isSubmitted)">
+                    <p [hidden]="!taxId.errors.required" class="required-text">
+                      Please enter company tax Id!
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 ">
+                <div class="form-group">
+                  <label>Vat Id </label>
+                  <input type="text" name="vatid" #vatId="ngModel" class="form-control" placeholder="Enter vat id"
+                    [(ngModel)]="account.company.vatId" />
+
+                </div>
+              </div>
+
+              <div class="col-md-6 ">
+                <div class="form-group">
+                  <label> Address line1 (*)</label>
+                  <input type="text" name="companyline1" #companyLine1="ngModel" class="form-control"
+                    placeholder="Enter address line 1"  [(ngModel)]="account.company.address.companyline1" [value]="account.company.address.line1" required />
+                  <div *ngIf="companyLine1.errors && (companyLine1.dirty || companyLine1.touched || isSubmitted)">
+                    <p [hidden]="!companyLine1.errors.required" class="required-text">
+                      Please enter address line 1!
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 ">
+                <div class="form-group">
+                  <label> Address line2</label>
+                  <input type="text" name="companyline2" #companyline2="ngModel" class="form-control"
+                    placeholder="Enter address line 2" [(ngModel)]="account.company.address.companyline2" />
+
+                </div>
+              </div>
+              <div class="col-md-6 ">
+                <div class="form-group">
+                  <label> Phone Number</label>
+                  <div class="input-group">
+                    <dial-code (selectCode)="selectDial($event)"></dial-code>
+                    <input class="form-control w-75" placeholder="Enter support phone" required type="text"
+                      pattern="[0-9]{9,10}" autocomplete="off" name="Phone" [(ngModel)]="account.company.address.phone"
+                      #phoneNumber="ngModel" />
+                    <div *ngIf="phoneNumber.errors && (phoneNumber.dirty ||
+              phoneNumber.touched || submitted)">
+                      <p [hidden]="!phoneNumber.errors.required" class="error">
+                        Phone number is required
+                      </p>
+                      <p [hidden]="!phoneNumber.errors.pattern" class="error">
+                        Phone number must have 9-10 numbers
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-3 ">
+                <div class="form-group">
+                  <label>Country (*)</label>
+                  <select name="companyCountry" #country="ngModel" class="form-control" [(ngModel)]="account.company.address.country" placeholder="Select Country"  (change)="onChangeCompanyCountry($event)" required >
+                    <option selected disabled value="">select country</option>
+                    <option *ngFor="let data of companyCountries" [value]="data.isoCode" >{{data.name}}</option>
+                  </select>
+                  
+                  <div *ngIf="country.errors && (country.dirty || country.touched || isSubmitted)">
+                    <p [hidden]="!country.errors.required" class="required-text">
+                      Please enter country!
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-3 ">
+                <div class="form-group">
+                  <label>City (*)</label>
+                  <input type="text" name="companyCity" #companyCity="ngModel" class="form-control" placeholder="Enter city"
+                    [(ngModel)]="account.company.address.companyCity" required />
+                  <div *ngIf="companyCity.errors && (companyCity.dirty || companyCity.touched || isSubmitted)">
+                    <p [hidden]="!companyCity.errors.required" class="required-text">
+                      Please enter city!
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-3 ">
+                <div class="form-group">
+                  <label>State (*)</label>
+                  <select name="companyState" #companyState="ngModel" class="form-control" [(ngModel)]="account.company.address.companyState" placeholder="Select State"   required >
+                    <option *ngFor="let state of companyStates" [value]="state.name" >{{state.name}}</option>
+                  </select>
+
+                  <div *ngIf="companyState.errors && (companyState.dirty || companyState.touched || isSubmitted)">
+                    <p [hidden]="!companyState.errors.required" class="required-text">
+                      Please enter state!
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-3 ">
+                <div class="form-group">
+                  <label>Postal code (*)</label>
+                  <input type="text" name="companyPostalcode" #companyPostalCode="ngModel" class="form-control"
+                    placeholder="Enter postalcode" [(ngModel)]="account.company.address.companyPostalCode" required />
+                  <div
+                    *ngIf="companyPostalCode.errors && (companyPostalCode .dirty || companyPostalCode .touched || isSubmitted)">
+                    <p [hidden]="!companyPostalCode .errors.required" class="required-text">
+                      Please enter postal code!
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <div class="row">
+            <div class="col-12 mb-3">
+              <h5>Personal Details</h5>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <div class="form-group">
+                <label> First Name (*)</label>
+                <input type="text" name="firstname" #firstName="ngModel" class="form-control"
+                  placeholder="Enter first name" [(ngModel)]="account.personal.firstName" required />
+                <div *ngIf="firstName.errors && (firstName.dirty || firstName.touched || isSubmitted)">
+                  <p [hidden]="!firstName.errors.required" class="required-text">
+                    Please enter first name!
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-3 ">
+              <div class="form-group">
+                <label> Last Name (*)</label>
+                <input type="text" name="lastName" #lastName="ngModel" class="form-control"
+                  placeholder="Enter last name" [(ngModel)]="account.personal.lastName" required />
+                <div *ngIf="lastName.errors && (lastName.dirty || lastName.touched || isSubmitted)">
+                  <p [hidden]="!lastName.errors.required" class="required-text">
+                    Please enter last name!
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label> Date of birth (*)</label>
+                <input type="date" name="dob" #dob="ngModel" class="form-control" placeholder="Enter date of birth"
+                  [(ngModel)]="account.personal.dateOfBirth" (change)="onChangeDOB($event)" required />
+                <div *ngIf="dob.errors && (dob.dirty || dob.touched || isSubmitted)">
+                  <p [hidden]="!dob.errors.required" class="required-text">
+                    Please enter date of birth!
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 ">
+              <div class="form-group">
+                <label> Address line1 (*)</label>
+                <input type="text" name="line1" #line1="ngModel" class="form-control" placeholder="Enter address line 1"
+                  [(ngModel)]="account.personal.address.line1" required />
+                <div *ngIf="line1.errors && (line1.dirty || line1.touched || isSubmitted)">
+                  <p [hidden]="!line1.errors.required" class="required-text">
+                    Please enter address line 1!
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 ">
+              <div class="form-group">
+                <label> Address line2</label>
+                <input type="text" name="line2" #line2="ngModel" class="form-control" placeholder="Enter address line 2"
+                  [(ngModel)]="account.personal.address.line2" />
+
+              </div>
+            </div>
+
+            <div class="col-sm-6 col-md-3 ">
+              <div class="form-group">
+                <label>Country (*)</label>
+                <select name="userCountry" #country="ngModel" class="form-control" [(ngModel)]="account.personal.address.country" placeholder="Select Country"  (change)="onChangeUsersCountry($event)" required >
+                  <option selected disabled value="">select country</option>
+                  <option *ngFor="let data of userCountries" [value]="data.isoCode" >{{data.name}}</option>
+                </select>
+                
+                <div *ngIf="country.errors && (country.dirty || country.touched || isSubmitted)">
+                  <p [hidden]="!country.errors.required" class="required-text">
+                    Please enter country!
+                  </p>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-sm-6 col-md-3 ">
+              <div class="form-group">
+                <label>City (*)</label>
+                <input type="text" name="city" #city="ngModel" class="form-control" placeholder="Enter city"
+                  [(ngModel)]="account.personal.address.city" required />
+                <div *ngIf="city.errors && (city.dirty || city.touched || isSubmitted)">
+                  <p [hidden]="!city.errors.required" class="required-text">
+                    Please enter city
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-3 ">
+              <div class="form-group">
+                <label>State (*)</label>
+                <select type="text" name="state" #state="ngModel" class="form-control" [(ngModel)]="account.personal.address.state" placeholder="Select State"   required >
+                  <option *ngFor="let state of userStates" [value]="state.name" >{{state.name}}</option>
+                </select>
+
+                <div *ngIf="state.errors && (state.dirty || state.touched || isSubmitted)">
+                  <p [hidden]="!state.errors.required" class="required-text">
+                    Please enter state!
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-3 ">
+              <div class="form-group">
+                <label>Postal code (*)</label>
+                <input type="text" name="postalcode" #postalCode="ngModel" class="form-control"
+                  placeholder="Enter postalcode" [(ngModel)]="account.personal.address.postalCode" required />
+                <div *ngIf="postalCode.errors && (postalCode.dirty || postalCode.touched || isSubmitted)">
+                  <p [hidden]="!postalCode.errors.required" class="required-text">
+                    Please enter postal code!
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-3 ">
+              <div class="form-group">
+                <label>SSN last 4 (*)</label>
+                <input type="text" name="ssnlast4" #ssnLast4="ngModel" class="form-control"
+                  placeholder="Enter postalcode" [(ngModel)]="account.personal.ssnLast4" required />
+                <div *ngIf="ssnLast4.errors && (ssnLast4.dirty || ssnLast4.touched || isSubmitted)">
+                  <p [hidden]="!ssnLast4.errors.required" class="required-text">
+                    Please enter ssn last 4!
+                  </p>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="col-12 mb-3">
+              <h5>Account Details</h5>
+            </div>
+            <div class="col-md-6 ">
+              <div class="form-group">
+                <label>Account Holder Name (*)</label>
+                <input type="text" name="accountholdername" #accountHolderName="ngModel" class="form-control"
+                  placeholder="Enter account holder name" [(ngModel)]="account.account.accountHolderName" required />
+                <div
+                  *ngIf="accountHolderName.errors && (accountHolderName.dirty || accountHolderName.touched || isSubmitted)">
+                  <p [hidden]="!accountHolderName.errors.required" class="required-text">
+                    Please enter account holder name!
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 ">
+              <div class="form-group">
+                <label>Account Number (*)</label>
+                <input type="text" name="accountnumber" #accountNumber="ngModel" class="form-control"
+                  placeholder="Enter account number" [(ngModel)]="account.account.accountNumber" required />
+                <div *ngIf="accountNumber.errors && (accountNumber.dirty || accountNumber.touched || isSubmitted)">
+                  <p [hidden]="!accountNumber.errors.required" class="required-text">
+                    Please enter account number!
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 ">
+              <div class="form-group">
+                <label>Routing Number (*)</label>
+                <input type="text" name="routingnumber" #routingNumber="ngModel" class="form-control"
+                  placeholder="Enter routing number" [(ngModel)]="account.account.routingNumber" required />
+                <div *ngIf="routingNumber.errors && (routingNumber.dirty || routingNumber.touched || isSubmitted)">
+                  <p [hidden]="!routingNumber.errors.required" class="required-text">
+                    Please enter name!
+                  </p>
+                </div>
+              </div>
+            </div>
+
+           
+
+            <div class="col-12 mb-3">
+              <h5>Business Details</h5>
+            </div>
+
+            <div class="col-sm-6 col-md-4 ">
+              <div class="form-group">
+                <label>Business MCC (*)</label>
+                
+                <select class="form-control" name="businessmcc" #businessMcc="ngModel" [(ngModel)]="account.mcc" required > 
+                  <option selected disabled value="">Choose Merchant Category</option>
+                  <option *ngFor="let mcc of mccList" [value]="mcc.value">{{mcc.name.length > 30 ?  (mcc.name | slice: 0: 30) + '...': mcc.name}}</option>
+                </select>
+                
+                <div *ngIf="businessMcc.errors && (businessMcc .dirty || businessMcc .touched || isSubmitted)">
+                  <p [hidden]="!businessMcc .errors.required" class="required-text">
+                    Please enter business Mcc!
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-4 ">
+              <div class="form-group">
+                <label>Business Name (*)</label>
+                <input type="text" name="businessname" #businessName="ngModel" class="form-control"
+                  placeholder="Enter business name" [(ngModel)]="account.businessName" required />
+                <div *ngIf="businessName.errors && (businessName .dirty || businessName .touched || isSubmitted)">
+                  <p [hidden]="!businessName .errors.required" class="required-text">
+                    Please enter business name!
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-4 ">
+              <div class="form-group">
+                <label>Business url (*)</label>
+                <input type="text" name="businessurl" #businessUrl="ngModel" class="form-control"
+                  placeholder="Enter business url" [(ngModel)]="account.url" required />
+                <div *ngIf="businessUrl.errors && (businessUrl .dirty || businessUrl .touched || isSubmitted)">
+                  <p [hidden]="!businessUrl .errors.required" class="required-text">
+                    Please enter business url!
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 ">
+              <div class="form-group">
+                <label>Business description(*)</label>
+                <textarea type="text" rows="5" name="description" #Description="ngModel" class="form-control"
+                  placeholder="Enter business description" [(ngModel)]="account.description" required></textarea>
+                <div *ngIf="Description.errors && (Description .dirty || Description .touched || isSubmitted)">
+                  <p [hidden]="!Description .errors.required" class="required-text">
+                    Please enter business url!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-12">
+          <div class="form-group">
+            <hr />
+            <button type="submit" class="btn btn-primary">Submit</button>
+            &nbsp;
+            <a class="btn btn-warning" [routerLink]="'/payout/account'" translate>Cancel</a>&nbsp;
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

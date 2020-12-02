@@ -1,0 +1,44 @@
+<div class="card">
+  <div class="card-body">
+    <h4 class="card-title"><span class="lstick"></span>Latest 5 Orders</h4>
+    <div class="table-responsive">
+      <table class="table table-hover earning-box">
+        <thead>
+          <tr>
+            <th colspan="2">Order</th>
+            <th>Status</th>
+            <th>Total price</th>
+            <th>Created at</th>
+          </tr>
+        </thead>
+        <tbody class="table-row-h-82">
+          <tr *ngFor="let item of orders">
+            <td>
+              <span class="round">
+                <img width="50px" alt="user" [src]="item?.productDetails?.mainImage?.thumbUrl | checkImage" width="50">
+              </span>
+            </td>
+            <td>
+              <h6>
+                <a [routerLink]="['/orders/view', item._id ]">
+                  {{item?.productDetails?.name}}
+                </a>
+              </h6>
+              <small class="text-muted">Code: {{item?.trackingCode}}</small>
+            </td>
+            <td>
+              <span class="label label-success" *ngIf="item?.status === 'completed'">Completed</span>
+              <span class="label label-primary" *ngIf="item?.status === 'shipping'">Shipping</span>
+              <span class="label label-warning" *ngIf="item?.status === 'pending'">Pending</span>
+              <span class="label label-info" *ngIf="item?.status === 'progressing'">progressing</span>
+              <span class="label label-danger" *ngIf="item?.status === 'refunded'">Refunded</span>
+              <span class="label label-danger" *ngIf="item?.status === 'cancelled'">Cancelled</span>
+            </td>
+            <td>{{item?.totalPrice | currency}}</td>
+            <td>{{item?.createdAt | date:'short'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

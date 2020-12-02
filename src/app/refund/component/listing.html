@@ -1,0 +1,62 @@
+<div class="card">
+  <div class="card-body table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>
+            <a (click)="sortBy('orderDetail.productDetails.name', 'desc')">Product</a>
+            <span *ngIf="sortOption.sortBy=='orderDetail.productDetails.name'">
+              <a (click)="sortBy('orderDetail.productDetails.name', 'asc')" *ngIf="sortOption.sortType=='desc'"><i
+                  class="fa fa-caret-down"></i></a>
+              <a (click)="sortBy('orderDetail.productDetails.name', 'desc')" *ngIf="sortOption.sortType=='asc'"><i
+                  class="fa fa-caret-up"></i></a>
+            </span>
+          </th>
+          <th>
+            <a (click)="sortBy('reason', 'desc')">Reason</a>
+            <span *ngIf="sortOption.sortBy=='reason'">
+              <a (click)="sortBy('reason', 'asc')" *ngIf="sortOption.sortType=='desc'"><i class="fa fa-caret-down"></i></a>
+              <a (click)="sortBy('reason', 'desc')" *ngIf="sortOption.sortType=='asc'"><i class="fa fa-caret-up"></i></a>
+            </span>
+          </th>
+          <th>
+            <a (click)="sortBy('createdAt', 'desc')">Created at</a>
+            <span *ngIf="sortOption.sortBy=='createdAt'">
+              <a (click)="sortBy('createdAt', 'asc')" *ngIf="sortOption.sortType=='desc'"><i class="fa fa-caret-down"></i></a>
+              <a (click)="sortBy('createdAt', 'desc')" *ngIf="sortOption.sortType=='asc'"><i class="fa fa-caret-up"></i></a>
+            </span>
+          </th>
+          <th>
+            Actions
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr [hidden]="total !== 0">
+          <td colspan="4">
+            <p class="text-center text-danger">There is no refunds yet..</p>
+          </td>
+        </tr>
+        <tr *ngFor="let item of items, let i = index">
+          <td>
+            <a [routerLink]="['/orders/view', item.orderDetailId ]">
+              {{item?.orderDetail?.productDetails?.name}}
+            </a>
+          </td>
+          <td>{{item.reason}}</td>
+          <td>
+            <span>{{item.createdAt | date}}</span>
+          </td>
+          <td>
+            <a [routerLink]="['/orders/view', item.orderDetailId ]"><i class="fa fa-pencil"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="display-inline" [hidden]="total < take">
+      <div class="pull-right">
+        <ngb-pagination [collectionSize]="total" [(page)]="page" [maxSize]="5" [pageSize]="take" (pageChange)="query()"></ngb-pagination>
+      </div>
+    </div>
+  </div>
+</div>

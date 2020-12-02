@@ -1,0 +1,98 @@
+<form role="form" #frm="ngForm" (submit)="submit(frm)" ngNativeValidate method="post">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Bank Name (*)</label>
+        <input type="text" class="form-control" placeholder="Enter bank name" [(ngModel)]="shop.bankInfo.bankName" required name="bankName" #bankName="ngModel"/>
+        <div *ngIf="bankName.errors && (bankName.dirty || bankName.touched || isSubmitted)">
+            <p [hidden]="!bankName.errors.required" class="required-text">
+              Please enter bank name!
+            </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Bank ID (*)</label>
+        <input type="text" class="form-control" placeholder="Enter bank ID" [(ngModel)]="shop.bankInfo.bankId" required name="bankId" #bankId="ngModel"/>
+        <div *ngIf="bankId.errors && (bankId.dirty || bankId.touched || isSubmitted)">
+          <p [hidden]="!bankId.errors.required" class="required-text">
+            Please enter bank ID!
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Bank Branch Name (*)</label>
+        <input type="text" class="form-control" placeholder="Enter bank branch name" [(ngModel)]="shop.bankInfo.bankBranchName" required name="bankBranchName" #bankBranchName="ngModel"/>
+        <div *ngIf="bankBranchName.errors && (bankBranchName.dirty || bankBranchName.touched || isSubmitted)">
+          <p [hidden]="!bankBranchName.errors.required" class="required-text">
+            Please enter bank branch name!
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Bank Branch ID (*)</label>
+        <input type="text" class="form-control" placeholder="Enter bank branch ID" [(ngModel)]="shop.bankInfo.bankBranchId" required name="bankBranchId" #bankBranchId="ngModel"/>
+        <div *ngIf="bankBranchId.errors && (bankBranchId.dirty || bankBranchId.touched || isSubmitted)">
+          <p [hidden]="!bankBranchId.errors.required" class="required-text">
+            Please enter bank branch ID!
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Account Name (*)</label>
+        <input type="text" class="form-control" placeholder="Enter account name" [(ngModel)]="shop.bankInfo.accountName" required name="accountName" #accountName="ngModel"/>
+        <div *ngIf="accountName.errors && (accountName.dirty || accountName.touched || isSubmitted)">
+          <p [hidden]="!accountName.errors.required" class="required-text">
+            Please enter account name!
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Account Number (*)</label>
+        <input type="text" class="form-control" placeholder="Enter account number" [minlength]="11" [maxlength]="30" [(ngModel)]="shop.bankInfo.accountNumber" pattern="[a-zA-Z0-9]+" required name="accountNumber" #accountNumber="ngModel"/>
+        <div *ngIf="accountNumber.errors && (accountNumber.dirty || accountNumber.touched || isSubmitted)">
+          <p [hidden]="!accountNumber.errors.required" class="required-text">
+            Please enter account number!
+          </p>
+          <p [hidden]="!accountNumber.errors.pattern" class="required-text">
+              Account Number is alphanumeric characters
+            </p>
+            <p [hidden]="!accountNumber.errors.minlength" class="error" translate>
+              Account Number must be at least 11 characters
+            </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Swift Code (*)</label>
+        <input type="text" class="form-control" placeholder="Enter swift code" [minlength]="8" [maxlength]="11" [(ngModel)]="shop.bankInfo.swiftCode" pattern="[a-zA-Z0-9]+" required name="swiftCode" #swiftCode="ngModel"/>
+        <div *ngIf="swiftCode.errors && (swiftCode.dirty || swiftCode.touched || isSubmitted)">
+            <p [hidden]="!swiftCode.errors.required" class="required-text">
+              Please enter swift code!
+            </p>
+            <p [hidden]="!swiftCode.errors.pattern" class="required-text">
+              Swift Code is alphanumeric characters
+            </p>
+            <p [hidden]="!swiftCode.errors.minlength" class="error" translate>
+              Swift Code must be 8 or 11 characters
+            </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="form-group">
+        <button class="btn btn-primary" type="submit">Save</button>
+      </div>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,49 @@
+<div class="card" *ngIf="!isLoading">
+    <div class="card-body table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>
+              Package name
+            </th>
+            <th>
+              Payment Gateway
+            </th>
+            <th>
+              Price
+            </th>
+            <th>
+              Transaction Id
+            </th>
+            <th>
+              Created At
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="!total">
+            <td colspan="5">
+              <p class="text-center text-danger">There is no items yet..</p>
+            </td>
+          </tr>
+          <tr *ngFor="let item of packages, let i = index">
+            <td>{{item?.products[0]?.description}}</td>
+            <td class="no-wrap">
+              <span class="label label-primary" *ngIf="item.paymentGateway === 'paypal'">Paypal</span>
+              <span class="label label-warning" *ngIf="item.paymentGateway === 'mygateglobal'">Credit Card</span>
+            </td>
+            <td class="no-wrap"><span class="label label-danger">{{item?.price | currency}}</span></td>
+            <td>{{item?.transactionId}}</td>
+            <td>
+              <span>{{item.createdAt | date:'short'}}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="display-inline" [hidden]="total < take">
+      <div class="pull-right">
+        <ngb-pagination [collectionSize]="total" [(page)]="page" [maxSize]="5" [pageSize]="take" (pageChange)="query()"></ngb-pagination>
+      </div>
+    </div>
+  </div>

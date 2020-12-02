@@ -1,0 +1,28 @@
+<form role="form" #frm="ngForm" (submit)="submit(frm)" ngNativeValidate method="post">
+  <div class="row">
+    <div class="col col-md-12">
+      <div class="form-group">
+        <label>Business Name</label>
+        <input type="text" class="form-control" placeholder="Enter business name" [(ngModel)]="shop.businessInfo.name" name="name" #name="ngModel"/>
+      </div>
+    </div>
+    
+    <div class="col col-md-12">
+      <div class="form-group">
+        <label>Identifier</label>
+        <input type="text" class="form-control" placeholder="Enter identifier" [(ngModel)]="shop.businessInfo.identifier" name="identifier" #identifier="ngModel"/>
+      </div>
+    </div>
+    <div class="col col-md-12">
+      <div class="form-group">
+        <label>Address</label>
+        <input type="text" class="form-control" placeholder="Enter address" [(ngModel)]="shop.businessInfo.address" name="address" #identifier="ngModel"/>
+      </div>
+    </div>
+    <div class="col col-md-12">
+      <div class="form-group">
+        <button class="btn btn-primary" type="submit">Save</button>
+      </div>
+    </div>
+  </div>
+</form>

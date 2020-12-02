@@ -1,0 +1,95 @@
+<form role="form" #frm="ngForm" (submit)="submit(frm)" ngNativeValidate method="post">
+  <div class="row">
+    <div class="col col-md-12">
+      <div class="form-group">
+        <label>Facebook</label>
+        <!-- <img src="assets/images/icon/trust.png" width="17px" *ngIf="shop.socialConnected.facebook"> -->
+        <input type="text" class="form-control" placeholder="Enter facebook profile url" pattern="https?://.+" [(ngModel)]="shop.socials.facebook" name="facebook" #facebook="ngModel" />
+        <div *ngIf="facebook.errors && (facebook.dirty || facebook.touched || isSubmitted)">
+          <p [hidden]="!facebook.errors.pattern" style="color:red">
+            Please enter valid url
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col col-md-12">
+      <div class="form-group">
+        <label>Twitter</label>
+        <!-- <img src="assets/images/icon/trust.png" width="17px" *ngIf="shop.socialConnected.twitter"> -->
+        <input type="text" class="form-control" placeholder="Enter twitter profile url" pattern="https?://.+" [(ngModel)]="shop.socials.twitter" name="twitter" #twitter="ngModel" />
+        <div *ngIf="twitter.errors && (twitter.dirty || twitter.touched || isSubmitted)">
+          <p [hidden]="!twitter.errors.pattern" style="color:red">
+            Please enter valid url
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col col-md-12">
+      <div class="form-group">
+        <label>Google</label>
+        <!-- <img src="assets/images/icon/trust.png" width="17px" *ngIf="shop.socialConnected.google"> -->
+        <input type="text" class="form-control" placeholder="Enter google profile url" pattern="https?://.+" [(ngModel)]="shop.socials.google" name="google" #google="ngModel" />
+        <div *ngIf="google.errors && (google.dirty || google.touched || isSubmitted)">
+          <p [hidden]="!google.errors.pattern" style="color:red">
+            Please enter valid url
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col col-md-12">
+      <div class="form-group">
+        <label>Linkedin</label>
+        <input type="text" class="form-control" placeholder="Enter linkedin profile url" pattern="https?://.+" [(ngModel)]="shop.socials.linkedin" name="linkedin" #linkedin="ngModel" />
+        <div *ngIf="linkedin.errors && (linkedin.dirty || linkedin.touched || isSubmitted)">
+          <p [hidden]="!linkedin.errors.pattern" style="color:red">
+            Please enter valid url
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col col-md-12">
+      <div class="form-group">
+        <label>Youtube</label>
+        <input type="text" class="form-control" placeholder="Enter youtube profile url" pattern="https?://.+" [(ngModel)]="shop.socials.youtube" name="youtube" #youtube="ngModel" />
+        <div *ngIf="youtube.errors && (youtube.dirty || youtube.touched || isSubmitted)">
+          <p [hidden]="!youtube.errors.pattern" style="color:red">
+            Please enter valid url
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col col-md-12">
+      <div class="form-group">
+        <label>Instagram</label>
+        <input type="text" class="form-control" placeholder="Enter instagram profile url" pattern="https?://.+" [(ngModel)]="shop.socials.instagram" name="instagram" #instagram="ngModel" />
+        <div *ngIf="instagram.errors && (instagram.dirty || instagram.touched || isSubmitted)">
+          <p [hidden]="!instagram.errors.pattern" style="color:red">
+            Please enter valid url
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col col-md-12">
+      <div class="form-group">
+        <label>Flickr</label>
+        <input type="text" class="form-control" placeholder="Enter flickr profile url" pattern="https?://.+" [(ngModel)]="shop.socials.flickr" name="flickr" #flickr="ngModel" />
+        <div *ngIf="flickr.errors && (flickr.dirty || flickr.touched || isSubmitted)">
+          <p [hidden]="!flickr.errors.pattern" style="color:red">
+            Please enter valid url
+          </p>
+        </div>
+      </div>
+    </div> -->
+    <div class="col col-md-12">
+
+    </div>
+    <div class="col col-md-12">
+      <div class="form-group button-socials">
+        <button class="btn btn-primary" type="submit">Save</button>
+      </div>
+      <!-- <small class="text-muted">If your account is successfully verified, we will confirm by the icon </small>
+      <img src="assets/images/icon/trust.png" width="17px"> -->
+    </div>
+  </div>
+</form>
